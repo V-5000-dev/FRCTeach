@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FRCTeach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <a href="/" class="topbar-logo">
+        <img class="wpi-logo" src="https://raw.githubusercontent.com/wpilibsuite/branding/main/export/png/wpilib-icon-256.png" alt="WPILib logo" />
+        <span class="topbar-wordmark">WPITeach</span>
+      </a>
+      <nav class="topbar-nav">
+        <div class="dropdown" id="lessons-dropdown">
+          <button class="dropdown-trigger">
+            Lessons
+            <svg class="dropdown-chevron" viewBox="0 0 10 6" fill="none">
+              <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div class="dropdown-panel">
+            <span class="dropdown-group-label">Introductory</span>
+            <a href="#" class="dropdown-item">Introduction to WPI Java</a>
+            <a href="#" class="dropdown-item">The Basics of WPI Java</a>
+          </div>
+        </div>
+      </nav>
+    </header>
