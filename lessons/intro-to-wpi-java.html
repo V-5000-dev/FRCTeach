@@ -13,13 +13,34 @@
   <body>
     <div id="header"></div>
     <main class="page-content" id="lesson-content"></main>
+    <script src="../js/components.js"></script>
     <script src="../js/main.js"></script>
     <script>
-      import { TextBlock, CodeEditor, Quiz, render } from "../js/components.js";
       TextBlock({
         heading: "Basic Robot Structure",
         body: "Every WPILib robot program extends TimedRobot. The methods below are called automatically by the framework — you just fill in what should happen at each stage of the match."
   });
+  Quiz({
+    questions: [
+      {
+        question: "Test",
+        options: ["1", "2", "3"],
+        answer: 0
+      },
+      {
+        question: "Test2",
+        options: ["4", "5", "6"],
+        answer: 3
+      }
+    ]
+  });
+  CodeEditor({
+  starterCode: `// Try writing some JavaScript
+function add(a, b) {
+  return a + b;
+}
+add(2, 3);`
+});
     </script>
   </body>
 </html>
