@@ -86,27 +86,69 @@ function Quiz({ questions, containerId = 'lesson-content' }) {
 
   renderQuestion();
 }
-  function CodeEditor({ starterCode = '', containerId = 'lesson-content' }) {
-    const container = document.getElementById(containerId);
-    const wrapper = document.createElement('div');
-    wrapper.className = 'code-editor-block';
-    wrapper.innerHTML = `
-      <textarea class="code-input" spellcheck="false">${starterCode}</textarea>
-      <button class="run-btn">Run</button>
-      <pre class="code-output"></pre>
-    `;
-    container.appendChild(wrapper);
-  
-    const runBtn = wrapper.querySelector('.run-btn');
-    const input = wrapper.querySelector('.code-input');
-    const output = wrapper.querySelector('.code-output');
-  
-    runBtn.onclick = () => {
-      try {
-        const result = eval(input.value);
-        output.textContent = result === undefined ? '(no return value)' : result;
-      } catch (e) {
-        output.textContent = 'Error: ' + e.message;
-      }
-    };
+function CodeEditor({ starterCode = '', containerId = 'lesson-content' }) {
+  const container = document.getElementById(containerId);
+  const wrapper = document.createElement('div');
+  wrapper.className = 'code-editor-block';
+  wrapper.innerHTML = `
+    <textarea class="code-input" spellcheck="false">${starterCode}</textarea>
+  `;
+  container.appendChild(wrapper);
+
+  const input = wrapper.querySelector('.code-input');
+
+  // auto-grow the textarea height to fit the code, instead of scrolling
+  function resize() {
+    input.style.height = 'auto';
+    input.style.height = input.scrollHeight + 'px';
   }
+  input.addEventListener('input', resize);
+  resize();
+}
+function PageNav({ containerId = 'lesson-content' }) {
+  const container = document.getElementById(containerId);
+  const pages = Array.from(container.querySelectorAll('.page'));
+  let currentPage = 0;
+
+  // create the nav bar (Back / page counter / Next)
+  const nav = document.createElement('div');
+  nav.className = 'page-nav';
+  nav.innerHTML = `
+    <button class="back-btn">Back</button>
+    <span class="page-counter"></span>
+    <button class="next-btn">Next</button>
+  `;
+  container.appendChild(nav);
+
+  const backBtn = nav.querySelector('.back-btn');
+  const nextBtn = nav.querySelector('.next-btn');
+  const counter = nav.querySelector('.page-counter');
+
+  function showPage(index) {
+    pages.forEach((page, i) => {
+      page.style.display = i === index ? 'block' : 'none';
+    });
+    counter.textContent = `${index + 1} / ${pages.length}`;
+    backBtn.disabled = index === 0;
+    nextBtn.disabled = index === pages.length - 1;
+
+    // scroll to top of the page content whenever you navigate
+    container.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  backBtn.onclick = () => {
+    if (currentPage > 0) {
+      currentPage--;
+      showPage(currentPage);
+    }
+  };
+
+  nextBtn.onclick = () => {
+    if (currentPage < pages.length - 1) {
+      currentPage++;
+      showPage(currentPage);
+    }
+  };
+
+  showPage(currentPage);
+}

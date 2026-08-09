@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -12,35 +11,40 @@
   </head>
   <body>
     <div id="header"></div>
-    <main class="page-content" id="lesson-content"></main>
+    <main class="page-content" id="lesson-content">
+
+      <div class="page">
+        <h2>Page 1: Intro</h2>
+        <p>Welcome to the lesson...</p>
+      </div>
+
+      <div class="page">
+        <h2>Page 2: Basic Structure</h2>
+        <p>Every WPILib robot program extends TimedRobot...</p>
+      </div>
+
+      <div class="page">
+        <h2>Page 3: Quiz</h2>
+        <div id="quiz-container"></div>
+      </div>
+
+    </main>
+
     <script src="../js/components.js"></script>
     <script src="../js/main.js"></script>
     <script>
-      TextBlock({
-        heading: "Basic Robot Structure",
-        body: "Every WPILib robot program extends TimedRobot. The methods below are called automatically by the framework — you just fill in what should happen at each stage of the match."
-  });
-  Quiz({
-    questions: [
-      {
-        question: "Test",
-        options: ["1", "2", "3", "0"],
-        answer: 0
-      },
-      {
-        question: "Test2",
-        options: ["4", "5", "6", "7"],
-        answer: 2
-      }
-    ]
-  });
-  CodeEditor({
-  starterCode: `// Try writing some JavaScript
-function add(a, b) {
-  return a + b;
-}
-add(2, 3);`
-});
+      PageNav({ containerId: 'lesson-content' });
+
+      Quiz({
+        containerId: 'quiz-container',
+        questions: [
+          {
+            question: "Test",
+            options: ["1", "2", "3"],
+            answer: 0
+          }
+        ]
+      });
     </script>
   </body>
 </html>
