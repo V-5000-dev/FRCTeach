@@ -1,12 +1,17 @@
-function TextBlock({ heading, body }) {
-    const container = document.getElementById('lesson-content');
-    const block = document.createElement('div');
-    block.className = 'text-block';
-    block.innerHTML = `<h2>${heading}</h2><p>${body}</p>`;
-    container.appendChild(block);
+import { EditorView, basicSetup } from 'https://esm.sh/codemirror@6.0.1';
+import { javascript } from 'https://esm.sh/@codemirror/lang-javascript@6';
+import { oneDark } from 'https://esm.sh/@codemirror/theme-one-dark@6';
+import { EditorState } from 'https://esm.sh/@codemirror/state@6';
+
+export function TextBlock({ heading, body }) {
+  const container = document.getElementById('lesson-content');
+  const block = document.createElement('div');
+  block.className = 'text-block';
+  block.innerHTML = `<h2>${heading}</h2><p>${body}</p>`;
+  container.appendChild(block);
 }
 
-function Quiz({ questions, containerId = 'lesson-content' }) {
+export function Quiz({ questions, containerId = 'lesson-content' }) {
   const container = document.getElementById(containerId);
   const quizDiv = document.createElement('div');
   quizDiv.className = 'quiz-block';
@@ -50,8 +55,10 @@ function Quiz({ questions, containerId = 'lesson-content' }) {
     };
   }
 
+
+
   function selectAnswer(i, btn) {
-    if (answered) return; // ignore clicks after the question is already answered
+    if (answered) return;
     answered = true;
 
     const q = questions[currentQ];
@@ -86,31 +93,32 @@ function Quiz({ questions, containerId = 'lesson-content' }) {
 
   renderQuestion();
 }
-function CodeEditor({ starterCode = '', containerId = 'lesson-content' }) {
+
+export function CodeEditor({ starterCode = '', containerId = 'lesson-content'}) {
   const container = document.getElementById(containerId);
   const wrapper = document.createElement('div');
   wrapper.className = 'code-editor-block';
-  wrapper.innerHTML = `
-    <textarea class="code-input" spellcheck="false">${starterCode}</textarea>
-  `;
   container.appendChild(wrapper);
 
-  const input = wrapper.querySelector('.code-input');
+  const view = new EditorView({
+    doc: starterCode,
+    extensions: [
+      basicSetup,
+      javascript(),
+      oneDark,
+      EditorView.editable.of(false)
+    ],
+    parent: wrapper
+  });
 
-  // auto-grow the textarea height to fit the code, instead of scrolling
-  function resize() {
-    input.style.height = 'auto';
-    input.style.height = input.scrollHeight + 'px';
-  }
-  input.addEventListener('input', resize);
-  resize();
+  return view;
 }
-function PageNav({ containerId = 'lesson-content' }) {
+
+export function PageNav({ containerId = 'lesson-content' }) {
   const container = document.getElementById(containerId);
   const pages = Array.from(container.querySelectorAll('.page'));
   let currentPage = 0;
 
-  // create the nav bar (Back / page counter / Next)
   const nav = document.createElement('div');
   nav.className = 'page-nav';
   nav.innerHTML = `
@@ -132,7 +140,6 @@ function PageNav({ containerId = 'lesson-content' }) {
     backBtn.disabled = index === 0;
     nextBtn.disabled = index === pages.length - 1;
 
-    // scroll to top of the page content whenever you navigate
     container.scrollIntoView({ behavior: 'smooth' });
   }
 

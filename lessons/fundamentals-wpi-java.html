@@ -21,6 +21,7 @@
       <div class="page">
         <h2>Page 2: Basic Structure</h2>
         <p>Every WPILib robot program extends TimedRobot...</p>
+        <div id="code-editor-1"></div>
       </div>
 
       <div class="page">
@@ -30,20 +31,21 @@
 
     </main>
 
-    <script src="../js/components.js"></script>
-    <script src="../js/main.js"></script>
-    <script>
+    <script type="module">
+      import { CodeEditor, PageNav, Quiz } from '../js/components.js';
+
       PageNav({ containerId: 'lesson-content' });
 
       Quiz({
         containerId: 'quiz-container',
         questions: [
-          {
-            question: "Test",
-            options: ["1", "2", "3"],
-            answer: 0
-          }
+          { question: "Test", options: ["1", "2", "3"], answer: 0 }
         ]
+      });
+
+      CodeEditor({
+        starterCode: 'public class Robot extends TimedRobot {\n  // ...\n}',
+        containerId: 'code-editor-1'
       });
     </script>
   </body>
