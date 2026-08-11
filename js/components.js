@@ -31,7 +31,7 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
         <span class="quiz-tracker">${currentQ + 1}/${questions.length}</span>
       </div>
       <div class="quiz-options"></div>
-      <button class="next-btn" disabled></button>
+      <button class="btn" disabled></button>
     `;
 
     const optionsDiv = quizDiv.querySelector('.quiz-options');
@@ -43,7 +43,7 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
       optionsDiv.appendChild(btn);
     });
 
-    const nextBtn = quizDiv.querySelector('.next-btn');
+    const nextBtn = quizDiv.querySelector('.btn');
     nextBtn.textContent = 'Next';
     nextBtn.onclick = () => {
       currentQ++;
@@ -71,7 +71,7 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
     allButtons[q.answer].classList.add('correct');
     allButtons.forEach(b => b.disabled = true);
 
-    quizDiv.querySelector('.next-btn').disabled = false;
+    quizDiv.querySelector('.btn').disabled = false;
   }
 
   function showResults() {
@@ -84,7 +84,7 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
       <p class="score-percent">${percent}%</p>
       <button class="retry-btn">Try Again</button>
     `;
-    quizDiv.querySelector('.retry-btn').onclick = () => {
+    quizDiv.querySelector('.btn').onclick = () => {
       currentQ = 0;
       score = 0;
       renderQuestion();
@@ -113,6 +113,42 @@ export function CodeEditor({ starterCode = '', containerId = 'lesson-content'}) 
 
   return view;
 }
+export function CodeEditorQuiz({ starterCode = '', answerCode = '', containerId = 'lesson-content' }) {
+  const container = document.getElementById(containerId);
+  const wrapper = document.createElement('div');
+  wrapper.className = 'code-editor-block';
+  container.appendChild(wrapper);
+
+  const view = new EditorView({
+    doc: starterCode,
+    extensions: [basicSetup, javascript(), oneDark],
+    parent: wrapper
+  });
+
+  const checkBtn = document.createElement('button');
+  checkBtn.className = 'btn';
+  checkBtn.textContent = 'Check';
+  wrapper.appendChild(checkBtn);
+
+  const resultText = document.createElement('p');
+  resultText.className = 'result-text';
+  wrapper.appendChild(resultText);
+
+  checkBtn.onclick = () => {
+    const viewContent = view.state.doc.toString().trim();
+    const expected = answerCode.trim();
+
+    if (viewContent === expected) {
+      resultText.textContent = 'Correct';
+      resultText.style.color = 'lightgreen';
+    } else {
+      resultText.textContent = 'Incorrect, ensure your syntax is fully correct.';
+      resultText.style.color = 'salmon';
+    }
+  };
+
+  return view;
+}
 
 export function PageNav({ containerId = 'lesson-content' }) {
   const container = document.getElementById(containerId);
@@ -122,10 +158,10 @@ export function PageNav({ containerId = 'lesson-content' }) {
   const nav = document.createElement('div');
   nav.className = 'page-nav';
   nav.innerHTML = `
-    <button class="back-btn">Back</button>
-    <span class="page-counter"></span>
-    <button class="next-btn">Next</button>
-  `;
+  <button class="btn back-btn">Back</button>
+  <span class="page-counter"></span>
+  <button class="btn next-btn">Next</button>
+`;
   container.appendChild(nav);
 
   const backBtn = nav.querySelector('.back-btn');

@@ -16,12 +16,13 @@
       <div class="page">
         <h2>Page 1: Intro</h2>
         <p>Welcome to the lesson...</p>
+        <div id="code-editor-1"></div>
       </div>
 
       <div class="page">
         <h2>Page 2: Basic Structure</h2>
         <p>Every WPILib robot program extends TimedRobot...</p>
-        <div id="code-editor-1"></div>
+        <div id="code-editor"></div>
       </div>
 
       <div class="page">
@@ -32,7 +33,7 @@
     </main>
 
     <script type="module">
-      import { CodeEditor, PageNav, Quiz } from '../js/components.js';
+      import { CodeEditor, CodeEditorQuiz, PageNav, Quiz } from '../js/components.js';
 
       PageNav({ containerId: 'lesson-content' });
 
@@ -45,7 +46,13 @@
 
       CodeEditor({
         starterCode: 'public class Robot extends TimedRobot {\n  // ...\n}',
+        containerId: 'code-editor'
+      });
+      CodeEditorQuiz({
+        starterCode: '',
+        answerCode: '//comment',
         containerId: 'code-editor-1'
+        
       });
     </script>
   </body>
