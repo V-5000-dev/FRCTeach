@@ -10,25 +10,24 @@ export function TextBlock({ heading, body }) {
   block.innerHTML = `<h2>${heading}</h2><p>${body}</p>`;
   container.appendChild(block);
 }
-
 export function Quiz({ questions, containerId = 'lesson-content' }) {
   const container = document.getElementById(containerId);
   const quizDiv = document.createElement('div');
   quizDiv.className = 'quiz-block';
   container.appendChild(quizDiv);
 
-  let currentQ = 0;
+  let currentQuestion = 0;
   let score = 0;
   let answered = false;
 
   function renderQuestion() {
     answered = false;
-    const q = questions[currentQ];
+    const q = questions[currentQuestion];
 
     quizDiv.innerHTML = `
       <div class="quiz-header">
-        <h3 class="quiz-question">${currentQ + 1}. ${q.question}</h3>
-        <span class="quiz-tracker">${currentQ + 1}/${questions.length}</span>
+        <h3 class="quiz-question">${currentQuestion + 1}. ${q.question}</h3>
+        <span class="quiz-tracker">${currentQuestion + 1}/${questions.length}</span>
       </div>
       <div class="quiz-options"></div>
       <button class="btn" disabled></button>
@@ -46,8 +45,8 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
     const nextBtn = quizDiv.querySelector('.btn');
     nextBtn.textContent = 'Next';
     nextBtn.onclick = () => {
-      currentQ++;
-      if (currentQ < questions.length) {
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
         renderQuestion();
       } else {
         showResults();
@@ -61,7 +60,7 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
     if (answered) return;
     answered = true;
 
-    const q = questions[currentQ];
+    const q = questions[currentQuestion];
     const correct = i === q.answer;
     if (correct) score++;
 
@@ -77,7 +76,7 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
   function showResults() {
     const percent = Math.round((score / questions.length) * 100);
     quizDiv.innerHTML = `
-      <h3>You got ${score}/${questions.length} correct</h3>
+      <h3>You got ${score}/${questions.length} correct.</h3>
       <div class="score-bar-track">
         <div class="score-bar-fill" style="width: ${percent}%"></div>
       </div>
@@ -85,7 +84,7 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
       <button class="retry-btn">Try Again</button>
     `;
     quizDiv.querySelector('.btn').onclick = () => {
-      currentQ = 0;
+      currentQuestion = 0;
       score = 0;
       renderQuestion();
     };
