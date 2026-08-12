@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FRCTeach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/style.css"/>
+  </head>
+  <body>
+    <div id="header"></div>
+    <main class="page-content" id="lesson-content">
+      <div class="page">
+        <h2>Fundamentals: The Basics of Commands and Subsystems.</h2>
+        <p>The majority of the code will be made up of commands and subsystems. </p>
+      </div>
+
+      <div class="page">
+        <h2>Page 1: Commands</h2>
+        <p>Commands are the peices of code that directly communicate with the robot. You can think of a Command as the task you assign your robot. Commands rely on other peices of code called subsystems. While a command can be seen as the function of the robot, a subsystem can be seen as an individual part of the robot. For example, a drive command will use the Drivetrain subsystem.</p>
+        <h3>Parts of a Command</h3>
+        <p>A command has multiple important parts. The class contains the name of the command as well as declaration of the extension of the command function.</p>
+        <div id="code-viewer-1-1"></div>
+        <p>Each command also typically has 4 methods: initialize, execute, isFinished, and end.</p>
+        <div id="code-viewer-1-2"></div>
+        <p>initialize is called only once when the robot is enabled. In our command, we might call a function in our driveTrain subsystem to start accelerating.</p>
+        <div id="code-viewer-1-3"></div>
+        <p>execute runs repeatedly while the command is active. In our command, we might call a function in our driveTrain subsystem to remain at a constant speed.</p>
+        <div id="code-viewer-1-4"></div>
+        <p>the boolean function isFinished also runs repeatedly while the command is active. If the function returns "true", execute will stop running and the method end will run. In our command, we might want to run the command continually, as we want our robot to keep driving. In a shoot command, isFinished might be used to check if all materials have been shot.</p>
+        <div id="code-viewer-1-5"></div>
+        <p>the function end runs one time when isFinished returns true. Even if our isFinished method cannot return "true", the end method can be used when stopping the robot.</p>
+        <div id="code-viewer-1-6"></div>
+      </div>
+
+      <div class="page">
+        <h2>Page 2: Example of a Command</h2>
+        <p>Here is a shortened example of a drive command from last years codebase. While it uses more subsystems, functions, and lines, you can clearly see the structural similarities from the examples on the previous page.</p>
+        <div id="code-viewer-2-1"></div>
+      </div>
+      <div class="page">
+        <h2>Page 3: Execuing Commands </h2>
+        <p>We've now created a Command, let's find out how to run it. Commands are typically either run from a controller or from your robot's main method; often simply called "robot".</p>
+        <div id="code-viewer-3-1"></div>
+      </div>
+      <div class="page">
+        <h2>Page 4: Subsystems</h2>
+        <p>What exactly is a subsystem? Well, it's a peice of code that operates a specific peice of the robot. For example, you might have a subsystem for the DriveTrain, intake, or shooter. Subsystems are structured simmilar to a command, altough with some diffrences.</p>
+        <p>The declration of a subsystem command looks like this:</p>
+        <div id="code-viewer-4-1"></div>
+        <p> The specical funcion of a subsystem is periodic. peridoic is very simmilar to the exectute method, which called repeatedly while the robot is running. In our intake subsystem, we would want our intake to run repeatedly. </p>
+      </div>
+
+    </main>
+
+    <script type="module">
+      import { CodeEditor, CodeViewer, PageNav, Quiz } from '../js/components.js';
+
+      PageNav({ containerId: 'lesson-content' });
+      CodeViewer({
+        starterCode: 'package frc.robot\nimport edu.wpi.first.wpilibj2.command.Command;\n\npublic class DriveForward extends Command{\n \n}',
+        containerId: 'code-viewer-1-1'
+      });
+      CodeViewer({
+        starterCode: 'package frc.robot\nimport edu.wpi.first.wpilibj2.command.Command;\n\npublic class DriveForward extends Command{\n  public void initialize(){\n \n  }\n  public void execute(){\n \ }\n  public void end(boolean interrupted){\n \n  }\n public boolean isFinished(){\n \ }\n}',
+        containerId: 'code-viewer-1-2'
+      });
+      CodeViewer({
+        starterCode: 'package frc.robot\nimport edu.wpi.first.wpilibj2.command.Command;\n\npublic class DriveForward extends Command{\n  private final DriveTrainSubsystem driveTrain;\n  public void initialize(){\n    driveTrain.accelerate(0.5, 1)\n  }\n}',
+        containerId: 'code-viewer-1-3'
+      });
+      CodeViewer({
+        starterCode: 'package frc.robot\nimport edu.wpi.first.wpilibj2.command.Command;\n\npublic class DriveForward extends Command{\n  private final DriveTrainSubsystem driveTrain;\n  public void execute(){\n    driveTrain.drive(0.5)\n  }\n}',
+        containerId: 'code-viewer-1-4'
+      });
+      CodeViewer({
+        starterCode: 'package frc.robot\nimport edu.wpi.first.wpilibj2.command.Command;\n\nnnpublic class DriveForward extends Command{\n  private final DriveTrainSubsystem driveTrain;\n  public void isFinished(){\n    //This command runs continually\n    return false;\n  }\n}',
+        containerId: 'code-viewer-1-5'
+      });
+      CodeViewer({
+        starterCode: 'package frc.robot\nimport edu.wpi.first.wpilibj2.command.Command;\n\npublic class DriveForward extends Command{\n  private final DriveTrainSubsystem driveTrain;\n  public boolean end(){\n    driveTrain.deccelerate(0, 1)\n    driveTrain.stop();\n  }\n}',
+        containerId: 'code-viewer-1-6'
+      });
+      CodeViewer({
+        starterCode: 'package frc.robot\nimport edu.wpi.first.wpilibj2.command.Command;\n\npublic class Drive extends Command {\n  \n  private final CANDriveSubsystem driveSubsystem;\n  // Handles smoothing so speed changes aren\'t jerky\n  private final DriveControllerSubsystem driveControllerSubsystem;\n\n  private final ControllerSubsystem controllerSubsystem;\n\n  // Keep track of the smoothed speeds between loops\n  private double leftSmoothed = 0.0;\n  private double rightSmoothed = 0.0;\n\n  // Create a Drive command\n  public Drive(CANDriveSubsystem driveSystem, DriveControllerSubsystem driveControllerSubsystem, CommandXboxController driverController, ControllerSubsystem controllerSubsystem) {\n    this.driveSubsystem = driveSystem;\n    this.driveControllerSubsystem = driveControllerSubsystem;\n    this.controllerSubsystem = controllerSubsystem;\n\n    addRequirements(driveSystem);\n  }\n\n  @Override\n  public void initialize() {\n    leftSmoothed = MathUtil.applyDeadband(controllerSubsystem.getAxisOrZero(DRIVER_LEFT_Y_AXIS, true), DRIVE_DEADBAND)\n        * (DRIVER_LEFT_Y_INVERTED ? -DRIVE_SCALING : DRIVE_SCALING);\n    rightSmoothed = MathUtil.applyDeadband(controllerSubsystem.getAxisOrZero(DRIVER_RIGHT_Y_AXIS, false), DRIVE_DEADBAND)\n        * (DRIVER_RIGHT_Y_INVERTED ? -DRIVE_SCALING : DRIVE_SCALING);\n  }\n\n  @Override\n  public void execute() {\n    // Read raw stick values\n    double left = controllerSubsystem.getAxisOrZero(DRIVER_LEFT_Y_AXIS, true);\n    double right = controllerSubsystem.getAxisOrZero(DRIVER_RIGHT_Y_AXIS, false);\n\n    leftSmoothed = driveControllerSubsystem.applyAsymmetricSlew(leftSmoothed, left);\n    rightSmoothed = driveControllerSubsystem.applyAsymmetricSlew(rightSmoothed, right);\n\n    driveSubsystem.driveTank(leftSmoothed, rightSmoothed);\n  }\n\n  @Override\n  public void end(boolean interrupted) {\n    leftSmoothed = 0.0;\n    rightSmoothed = 0.0;\n    driveSubsystem.stop();\n  }\n\n  @Override\n  public boolean isFinished() {\n    return false;\n  }\n  \n}',
+        containerId: 'code-viewer-2-1'
+      });
+      CodeViewer({
+        starterCode: 'package frc.robot\nimport edu.wpi.first.wpilibj2.command.Command;\nimport edu.wpi.first.wpilibj2.command.CommandScheduler;\n\npublic class Robot{\n  private Command driveForward;\n  public void robotInit{\n    CommandScheduler.getInstance().schedule(m_autonomousCommand);\n  }\n}',
+        containerId: 'code-viewer-3-1'
+      });
+      CodeViewer({
+        starterCode: 'package frc.robot.subsystems;\nimport edu.wpi.first.wpilibj2.command.SubsystemBase;\n\npublic class Intake extends SubSystem{\n \n}',
+        containerId: 'code-viewer-4-1'
+      });
+    </script>
+    <script src="../js/main.js"></script>
+  </body>
+  
+</html>

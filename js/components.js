@@ -93,7 +93,7 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
   renderQuestion();
 }
 
-export function CodeEditor({ starterCode = '', containerId = 'lesson-content'}) {
+export function CodeViewer({ starterCode = '', containerId = 'lesson-content'}) {
   const container = document.getElementById(containerId);
   const wrapper = document.createElement('div');
   wrapper.className = 'code-editor-block';
@@ -112,7 +112,7 @@ export function CodeEditor({ starterCode = '', containerId = 'lesson-content'}) 
 
   return view;
 }
-export function CodeEditorQuiz({ starterCode = '', answerCode = '', containerId = 'lesson-content' }) {
+export function CodeEditor({ starterCode = '', answerCode = '', containerId = 'lesson-content' }) {
   const container = document.getElementById(containerId);
   const wrapper = document.createElement('div');
   wrapper.className = 'code-editor-block';
