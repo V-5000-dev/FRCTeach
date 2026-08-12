@@ -44,6 +44,7 @@
         <h2>Page 3: Execuing Commands </h2>
         <p>We've now created a Command, let's find out how to run it. Commands are typically either run from a controller or from your robot's main method; often simply called "robot".</p>
         <div id="code-viewer-3-1"></div>
+        <p>RobotInit and robotPeriodic are also special methods of the robot class.\n\n Commands are executed through the CommandScheduler.</p>
       </div>
       <div class="page">
         <h2>Page 4: Subsystems</h2>
@@ -88,7 +89,7 @@
         containerId: 'code-viewer-2-1'
       });
       CodeViewer({
-        starterCode: 'package frc.robot\nimport edu.wpi.first.wpilibj2.command.Command;\nimport edu.wpi.first.wpilibj2.command.CommandScheduler;\n\npublic class Robot{\n  private Command driveForward;\n  public void robotInit{\n    CommandScheduler.getInstance().schedule(m_autonomousCommand);\n  }\n}',
+        starterCode: 'package frc.robot\nimport edu.wpi.first.wpilibj2.command.Command;\nimport edu.wpi.first.wpilibj2.command.CommandScheduler;\n\npublic class Robot{\n  private Command driveForward;\n  public void robotInit(){\n    driveForward = new DriveForward();\n    CommandScheduler.getInstance().schedule(driveForward);\n  }\n  public void robotPeriodic{\n    CommandScheduler.getInstance().run();\n  }\n}',
         containerId: 'code-viewer-3-1'
       });
       CodeViewer({
