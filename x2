@@ -2,7 +2,7 @@ public class Robot extends TimedRobot{
     private RobotContainer robotContainer;
     public void robotInit()
     {
-      robotContainer = new RobotContainer();
+      
     }
     public void robotPeriodic()
     {
@@ -14,7 +14,8 @@ public class Robot extends TimedRobot{
     private final FeederSubsystem feederSubsystem;
     private final Intake intake;
     public RobotContainer(){
-
+      
+      intake = new Intake(feederSubsystem);
     }
   }
   
@@ -26,15 +27,9 @@ public class Robot extends TimedRobot{
     private final FeederSubsystem feeder;
     public Intake(FeederSubsystem feeder){
       this.feeder = feeder;
-      addRequirements(feeder);
-    }
-    public void initialize()
-    {
       
     }
-    public void end(boolean interrupted){
-      
-    }
+
     public boolean isFinished()
     {
       //Intake runs forever through the match 
@@ -56,7 +51,7 @@ public class Robot extends TimedRobot{
       feedMotor.setVoltage(volts);
     }
     public void stop(){
-      
+      feedMotor.set(0);
     }
     public void periodic()
     {

@@ -83,7 +83,7 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
       <p class="score-percent">${percent}%</p>
       <button class="retry-btn">Try Again</button>
     `;
-    quizDiv.querySelector('.btn').onclick = () => {
+    quizDiv.querySelector('.retry-btn').onclick = () => {
       currentQuestion = 0;
       score = 0;
       renderQuestion();
@@ -133,9 +133,22 @@ export function CodeEditor({ starterCode = '', answerCode = '', containerId = 'l
   resultText.className = 'result-text';
   wrapper.appendChild(resultText);
 
+  function normalize(code) {
+    return code
+      .split('\n')
+      .map(line => line.trim())
+      .filter(line => line.length > 0)
+      .join('\n')
+      .replace(/\s+/g, ' ')
+      .replace(/\s*([{}();,])\s*/g, '$1'); // remove spaces around braces, parens, semicolons, commas
+  }
+
   checkBtn.onclick = () => {
-    const viewContent = view.state.doc.toString().trim();
-    const expected = answerCode.trim();
+    const viewContent = normalize(view.state.doc.toString());
+    const expected = normalize(answerCode);
+
+    console.log('STUDENT:', JSON.stringify(viewContent));
+    console.log('ANSWER:', JSON.stringify(expected));
 
     if (viewContent === expected) {
       resultText.textContent = 'Correct';
@@ -143,6 +156,15 @@ export function CodeEditor({ starterCode = '', answerCode = '', containerId = 'l
     } else {
       resultText.textContent = 'Incorrect, ensure your syntax is fully correct.';
       resultText.style.color = 'salmon';
+
+      // Find first differing character to help pinpoint the mismatch
+      let i = 0;
+      while (i < viewContent.length && i < expected.length && viewContent[i] === expected[i]) {
+        i++;
+      }
+      console.log('First mismatch at index:', i);
+      console.log('STUDENT around mismatch:', JSON.stringify(viewContent.slice(Math.max(0, i - 20), i + 20)));
+      console.log('ANSWER around mismatch:', JSON.stringify(expected.slice(Math.max(0, i - 20), i + 20)));
     }
   };
 
