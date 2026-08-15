@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FRCTeach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/style.css"/>
+  </head>
+  <body>
+    <div id="header"></div>
+    <main class="page-content" id="lesson-content">
+      <div class="page">
+        <h2>Fundamentals: Java in WPILib.</h2>
+        <p>Learn how we use Java's specific variable and method tipes in the robot's code.</p>
+      </div>
+
+      <div class="page">
+        <h2>Page 1: Double and Static Type</h2>
+        <p>Java has 3 seperate variable tipes to store numbers: int, float, and double. Int is used to store whole number values for motor or port IDs. We use the type Double to store all other values instead float. Floats only store 8 bytes of data, while double stores 16. This allows our variables to be as percise as possible. </p>
+        <p>For example, lets say you had a simple script to calculate the area of a circle. If you had your pi variable as an int, you could store only 3. If you had it as a float, you could store up to 3.141592. The double type will allow us to use the most percise variable 3.141592653589793.</p>
+        <div id="code-viewer-1-1"></div>
+        <h3>Static Type</h3>
+        <p>The class Constants() stores all the variables for the codebase. We declare these variables with the static modifier, which means there is only one copy of each varible shared across all instances of the class. This allows other classes to acess the same value without creating an instance of the Constants class. This is done so we only have 1 value for our variables. We don't want to have seperate motorSpeed variables, for example, used in different classes. We need one value for our motorSpeed aross all classes.</p>
+        <p>We can also use static methods and classes. Simmilar to a static variabke, a static method belongs to the class it is declared in rather then an object, meaning it can be called without creating an instance of the class. We can also use static nested classes, which are classes declared inside of another class that do not require an instance of the outer class to be called. Static methods are typically used to perform a specific action, while a static nested class is used to define another type of object, that is still related to the outside class.</p>
+        <p>Finally, we can also import static classes and methods statically using import static. This allows us to use methods and variables without having the class name as a prefix. Note that doing this may make it harder to understand where variables came from.</p>
+      </div>
+      <div clas ="page">
+        <h2>Page 2: Static Classes Continued</h2>
+      </div>
+
+    </main>
+
+    <script type="module">
+      import { CodeEditor, CodeViewer, PageNav, Quiz } from '../js/components.js';
+
+      PageNav({ containerId: 'lesson-content' });
+      CodeViewer({
+        starterCode: 'public int pi = 3; \npublic float pi = 3.141592; \npublic double pi = 3.141592653589793;',
+        containerId: 'code-viewer-1-1'
+      });
+    </script>
+    <script src="../js/main.js"></script>
+  </body>
+  
+</html>

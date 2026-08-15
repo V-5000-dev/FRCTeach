@@ -1,65 +1,33 @@
-public class Robot extends TimedRobot{
-    private RobotContainer robotContainer;
-    public void robotInit()
-    {
-      robotContainer = new RobotContainer();
-    }
-    public void robotPeriodic()
-    {
-      CommandScheduler.getInstance().run();
+import static frc.robot.Constants.Constants.OperatorConstants.*;
+public class Rotate extends Command
+{
+  public void execute() {
+    double left;
+    double right;
+  
+    if (clockwise) {
+      left = -ROTATE_SPEED; 
+      right = ROTATE_SPEED;  
+    } else {
+      left = ROTATE_SPEED;   
+      right = -ROTATE_SPEED; 
     }
   }
-  
-  public class RobotContainer {
-    private final FeederSubsystem feederSubsystem;
-    private final Intake intake;
-    public RobotContainer(){
+}
 
+import frc.robot.Constants.Constants.OperatorConstants;
+public class Rotate extends Command
+{
+  public void execute() {
+    double left;
+    double right;
+  
+    if (clockwise) {
+      left = -OperatorConstants.ROTATE_SPEED;
+      right = OperatorConstants.ROTATE_SPEED;
+    } else {
+      left = OperatorConstants.ROTATE_SPEED;
+      right = -OperatorConstants.ROTATE_SPEED;
     }
   }
-  
-  public final class Constants{
-    public static final double INTAKING_FEEDER_VOLTAGE = 6;
-  }
-  
-  public class Intake extends Command {
-    private final FeederSubsystem feeder;
-    public Intake(FeederSubsystem feeder){
-      this.feeder = feeder;
-      addRequirements(feeder);
-    }
-    public void initialize()
-    {
-      
-    }
-    public void end(boolean interrupted){
-      
-    }
-    public boolean isFinished()
-    {
-      //Intake runs forever through the match 
-      return false;
-    }
-  
-  }
-  
-  public class FeederSubsystem extends SubsystemBase{
-    private final SparkFlex feedMotor;
-  
-    public FeederSubsystem() {
-      feedMotor = new SparkFlex(0, MotorType.kBrushless);
-      SparkFlexConfig config = new SparkFlexConfig();
-      feedMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    }
-  
-    public void setVoltage(double volts){
-      feedMotor.setVoltage(volts);
-    }
-    public void stop(){
-      
-    }
-    public void periodic()
-    {
-      //(Leave blank)
-    }
-  }
+}
