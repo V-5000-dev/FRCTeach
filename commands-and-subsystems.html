@@ -19,9 +19,9 @@
 
       <div class="page">
         <h2>Page 1: Commands</h2>
-        <p>Commands are the peices of code that directly communicate with the robot. You can think of a Command as the task you assign your robot. Commands rely on other peices of code called subsystems. While a command can be seen as the function of the robot, a subsystem can be seen as an individual part of the robot. For example, a drive command will use the Drivetrain subsystem.</p>
+        <p>Commands are the pieces of code that directly communicate with the robot. You can think of a Command as the task you assign your robot. Commands rely on other pieces of code called subsystems. While a command can be seen as the function of the robot, a subsystem can be seen as an individual part of the robot. For example, a drive command will use the Drivetrain subsystem.</p>
         <h3>Parts of a Command</h3>
-        <p>A command has multiple important parts. The class contains the name of the command as well as declaration of the extension of the command function.</p>
+        <p>A command has multiple important parts. The class contains the name of the command as well as a declaration of the extension of the command function.</p>
         <div id="code-viewer-1-1"></div>
         <p>Commands should have a getRequirements method. This method ensures 2 different commands don't use the same subsystem, which can result in issues with the subsystem attempting to output in 2 different places.</p>
         <div id="code-viewer-1-2"></div>
@@ -31,20 +31,20 @@
         <div id="code-viewer-1-4"></div>
         <p>execute runs repeatedly while the command is active. In our command, we might call a function in our driveTrain subsystem to remain at a constant speed.</p>
         <div id="code-viewer-1-5"></div>
-        <p>the boolean function isFinished also runs repeatedly while the command is active. If the function returns "true", execute will stop running and the method end will run. In our command, we might want to run the command continually, as we want our robot to keep driving. In a shoot command, isFinished might be used to check if all materials have been shot.</p>
+        <p>The boolean function isFinished also runs repeatedly while the command is active. If the function returns "true", execute will stop running and the method end will run. In our command, we might want to run the command continually, as we want our robot to keep driving. In a shoot command, isFinished might be used to check if all materials have been shot.</p>
         <div id="code-viewer-1-6"></div>
-        <p>the function end runs one time when isFinished returns true. Even if our isFinished method cannot return "true", the end method can be used when stopping the robot.</p>
+        <p>The function end runs one time when isFinished returns true. Even if our isFinished method cannot return "true", the end method can be used when stopping the robot.</p>
         <div id="code-viewer-1-7"></div>
       </div>
 
       <div class="page">
         <h2>Page 2: Example of a Command</h2>
-        <p>Here is a shortened example of a drive command from last years codebase. While it uses more subsystems, functions, and lines, you can clearly see the structural similarities from the examples on the previous page.</p>
+        <p>Here is a shortened example of a drive command from last year's codebase. While it uses more subsystems, functions, and lines, you can clearly see the structural similarities from the examples on the previous page.</p>
         <div id="code-viewer-2-1"></div>
       </div>
       <div class="page">
-        <h2>Page 3: Execuing Commands </h2>
-        <p>We've now created a Command, let's find out how to run it. Commands are typically either run from a controller or from your robot's RobotContainer class.</p>
+        <h2>Page 3: Executing Commands </h2>
+        <p>We've now created a Command; let's find out how to run it. Commands are typically either run from a controller or from your robot's RobotContainer class.</p>
         <div id="code-viewer-3-1"></div>
         <div id="code-viewer-3-2"></div>
         <p>RobotInit and robotPeriodic are also special methods of the robot class.</p>
@@ -52,34 +52,34 @@
       </div>
       <div class="page">
         <h2>Page 4: Subsystems</h2>
-        <p>What exactly is a subsystem? Well, it's a peice of code that operates a specific peice of the robot. For example, you might have a subsystem for the DriveTrain, intake, or shooter. Subsystems are structured simmilar to a command, altough with some diffrences.</p>
-        <p>The declration of a subsystem command looks like this:</p>
+        <p>What exactly is a subsystem? Well, it's a piece of code that operates a specific piece of the robot. For example, you might have a subsystem for the DriveTrain, intake, or shooter. Subsystems are structured similar to a command, although with some differences.</p>
+        <p>The declaration of a subsystem command looks like this:</p>
         <div id="code-viewer-4-1"></div>
-        <p> Subsystems also have a speicial method called periodic. peridoic functions very simmilar to execute, just on the subsystem level. peridoic is not as widely used as execute to avoid interfering with the already running Command. </p>
-        <p>Now that we know exaclty what a subsystem is, lets take a look at how our example DriveTrain subsystem would look.</p>
+        <p> Subsystems also have a special method called periodic. Periodic functions very similar to execute, just on the subsystem level. Periodic is not as widely used as execute to avoid interfering with the already running Command. </p>
+        <p>Now that we know exactly what a subsystem is, let's take a look at how our example DriveTrain subsystem would look.</p>
         <div id="code-viewer-4-2"></div>
         <p>Subsystems should also be defined in RobotContainer. RobotContainer is a standard place to store them as we only want one subsystem since they are responsible for one part. You don't want multiple subsystems controlling your driveTrain. RobotContainer also allows Commands to reference Subsystems.</p>
         <p> </p>
       </div>
       <div class="page">
         <h2>Page 5: Putting it together</h2>
-        <p>So far we've created a command and subsystem for our driveTrain. Using what you've learned so far, complete the Command and Subsystem for the robots intake system.</p>
+        <p>So far we've created a command and subsystem for our driveTrain. Using what you've learned so far, complete the Command and Subsystem for the robot's intake system.</p>
         <h3>Your code must meet the following requirements:</h3>
         <p>RobotContainer needs to have all declarations.</p>
         <p>FeederSystem SetVoltage must run once at the start of the Command.</p>
         <p>FeederSubsystem End command must stop the feeder using ".set(0);"</p>
         <p>FeederSystem Stop must run if boolean interrupted is true.</P>
         <p>Do not rename any variable. Do not add or remove comments. Keep the order of the classes and methods the same. No code needs to be written or removed.</p>
-        <p>The method instantiate should come before method end in the script.</p>
+        <p>The method instantiate should come before the method end in the script.</p>
         <h3>Limitations of this example:</h3>
         <p>This is a simplified version of a real codebase.</p>
-        <p>Import statements, as well as some declarations and required setups for motors are removed for simplicty.</p>
-        <p>In java, you cannot have multiple classes in one file, as it is represented here.</p>
+        <p>Import statements, as well as some declarations and required setups for motors, are removed for simplicity.</p>
+        <p>In Java, you cannot have multiple classes in one file, as it is represented here.</p>
         <div id="code-quiz-5-1"></div>
       </div>
       <div class = "page">
         <h2>Page 6: Quiz</h2>
-        <p>You've come to the end of the course. Take this quick 5 question quiz to see how much you remember.</p>
+        <p>You've come to the end of the course. Take this quick 5-question quiz to see how much you remember.</p>
         <div id="quiz-6-1"></div>
       </div>
 
