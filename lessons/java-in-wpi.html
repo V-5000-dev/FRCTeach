@@ -26,10 +26,26 @@
         <p>The class Constants() stores all the variables for the codebase. We declare these variables with the static modifier, which means there is only one copy of each varible shared across all instances of the class. This allows other classes to acess the same value without creating an instance of the Constants class. This is done so we only have 1 value for our variables. We don't want to have seperate motorSpeed variables, for example, used in different classes. We need one value for our motorSpeed aross all classes.</p>
         <p>We can also use static methods and classes. Simmilar to a static variabke, a static method belongs to the class it is declared in rather then an object, meaning it can be called without creating an instance of the class. We can also use static nested classes, which are classes declared inside of another class that do not require an instance of the outer class to be called. Static methods are typically used to perform a specific action, while a static nested class is used to define another type of object, that is still related to the outside class.</p>
         <p>Finally, we can also import static classes and methods statically using import static. This allows us to use methods and variables without having the class name as a prefix. Note that doing this may make it harder to understand where variables came from.</p>
+        <div id="code-viewer-1-2"></div>
       </div>
-      <div clas ="page">
+      <div class ="page">
         <h2>Page 2: Static Classes Continued</h2>
+        <p>Lets take a look at an example of how we use static classes. We only use static classes in a few of our classes, such as robot, robotcontainer, main and constraints.</p>
+        <div id="code-viewer-2-1"></div>
+        <p>Notice that we can also input variables directly:</p>
+        <div id="code-viewer-2-2"></div>
+        <p>In this script we do not use a static import, requring to prefix the variables with Accessibles. :</p>
+        <div id="code-viewer-2-3"></div>
+        <p>(Accessibles is a seperate class from Constants, that stores only some of the variables)</p>
+        <p>Notice in both of the scripts everything in Accessibles/Constants is static to allow all other scripts to acess and modify them.</p>
       </div>
+      <div class = "page">
+        <h2></h2>
+
+
+      </div>
+      
+      
 
     </main>
 
@@ -40,6 +56,22 @@
       CodeViewer({
         starterCode: 'public int pi = 3; \npublic float pi = 3.141592; \npublic double pi = 3.141592653589793;',
         containerId: 'code-viewer-1-1'
+      });
+      CodeViewer({
+      starterCode: 'import static frc.robot.Constants.Constants.OperatorConstants.*;\n\npublic class Rotate extends Command\n{\n  public void execute() {\n    double left;\n    double right;\n\n    if (clockwise) {\n      left = -ROTATE_SPEED;\n      right = ROTATE_SPEED;\n    } else {\n      left = ROTATE_SPEED;\n      right = -ROTATE_SPEED;\n    }\n  }\n}\n\n// ---- OR ----\n\nimport frc.robot.Constants.Constants.OperatorConstants;\n\npublic class Rotate extends Command\n{\n  public void execute() {\n    double left;\n    double right;\n\n    if (clockwise) {\n      left = -OperatorConstants.ROTATE_SPEED;\n      right = OperatorConstants.ROTATE_SPEED;\n    } else {\n      left = OperatorConstants.ROTATE_SPEED;\n      right = -OperatorConstants.ROTATE_SPEED;\n    }\n  }\n}',
+      containerId: 'code-viewer-1-2'
+      });
+      CodeViewer({
+      starterCode: 'public final class Constants {\n  public static final class FuelConstants {\n    public static final double LAUNCHING_LAUNCHER_RPM = 3000.0;\n    public static final double LAUNCHING_FEEDER_RPM = 2400.0;\n  }\n}\n\nimport static frc.robot.Constants.Constants.FuelConstants.LAUNCHING_FEEDER_RPM;\nimport static frc.robot.Constants.Constants.FuelConstants.LAUNCHING_LAUNCHER_RPM;\n\npublic class Feed extends Command {\n  private void commandFeedProfile() {\n    double shooterRpm = Dashboard.getNumber(Dashboard.KEY_LAUNCH_LAUNCHER_RPM, LAUNCHING_LAUNCHER_RPM);\n    double feederRpm = Dashboard.getNumber(Dashboard.KEY_LAUNCH_FEEDER_RPM, LAUNCHING_FEEDER_RPM);\n    shooter.setRPM(shooterRpm);\n    feeder.setRPM(feederRpm);\n  }\n}',
+      containerId: 'code-viewer-2-1'
+      });
+      CodeViewer({
+      starterCode: 'import static frc.robot.Constants.Constants.FuelConstants.LAUNCHING_FEEDER_RPM',
+      containerId: 'code-viewer-2-2'
+      });
+      CodeViewer({
+      starterCode: 'public final class Accessibles {\n  public static class Outtake {\n    public static boolean prefireOn = false;\n  }\n}\n\nimport frc.robot.Accessibles;\n\npublic class PrefireCommand extends Command {\n  public void initialize() {\n    Accessibles.Outtake.prefireOn = true;\n  }\n}',
+      containerId: 'code-viewer-2-3'
       });
     </script>
     <script src="../js/main.js"></script>
