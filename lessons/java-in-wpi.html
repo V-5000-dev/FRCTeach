@@ -36,12 +36,27 @@
         <div id="code-viewer-2-2"></div>
         <p>In this script we do not use a static import, requring to prefix the variables with Accessibles. :</p>
         <div id="code-viewer-2-3"></div>
-        <p>(Accessibles is a seperate class from Constants, that stores only some of the variables)</p>
+        <p>(Accessibles is a seperate class from Constants, that stores only some specific values)</p>
         <p>Notice in both of the scripts everything in Accessibles/Constants is static to allow all other scripts to acess and modify them.</p>
       </div>
       <div class = "page">
-        <h2></h2>
-
+        <h2>Page 3: Final Keyword</h2>
+        <p>You may have also noticed some variables, methods, and classes have the keyword final. Variables with the keyword final cannot be changed after assigned. Lets take a look at our example of pi from eariler in the lesson:</p>
+        <div id="code-viewer-3-1"></div>
+        <p>Since the value of pi should never change, we can add the final keyword. It is to note that the final keyword is not required, but it acts as a safety net to prevent it from being assigned to a different value. </p>
+        <p>Additonally, if we don't want classes to create instances of pi, we can add the static keyword. The static final pi, or a constant, is now a value that is assigned once across the entire code, and is never modified.</p>
+        <div id="code-viewer-3-2"></div>
+        <p>Almost all of our variables stored in constants are applied with the public static keywords, hence the name of the class.</p>
+        <div id="code-viewer-3-3"></div>
+        <h3>Class Specific Varibles</h3>
+        <p>Class specific variables are typically stored with the keywords private final. We don't need other classes to acess class specific variables, but we still want the one value to be unchanged in the class. </p>
+        <div id="code-viewer-3-4"></div>
+        <p>In our codebase, as well as many others, we name class specific varibles with a lowercase first letter and captal for the other first letter of other words. We name Constants in all captal letters seperated by a underscore.</p>
+        <h3>Final Methods and Classes</h3>
+        <p>Final methods cannot be overridden by subclasses, or inherited and modified. Final classes cannot be extended. Let's take these 2 classes:</p>
+        <div id="code-viewer-3-5"></div>
+        <p>Class constants cannot be extended due to it being final. Forecefield and OperatorConstants could technically be extended, since they are final. Both are also static nested classes, meaning they belong directly to Constants instead of any instatnce of constants.</p>
+        <p>THe fields inside the script are final, so they cannot be ressaigned to a new value. They are also static, meaning each one exists as a single, shared copy on the class. This lets you write Constants.Forcefield.angleThreshold directly.</p>
 
       </div>
       
@@ -73,6 +88,26 @@
       starterCode: 'public final class Accessibles {\n  public static class Outtake {\n    public static boolean prefireOn = false;\n  }\n}\n\nimport frc.robot.Accessibles;\n\npublic class PrefireCommand extends Command {\n  public void initialize() {\n    Accessibles.Outtake.prefireOn = true;\n  }\n}',
       containerId: 'code-viewer-2-3'
       });
+      CodeViewer({
+        starterCode: 'public final double pi = 3.141592653589793;',
+        containerId: 'code-viewer-3-1'
+      });
+      CodeViewer({
+        starterCode: 'public static final double pi = 3.141592653589793;',
+        containerId: 'code-viewer-3-2'
+      });
+      CodeViewer({
+        starterCode: 'public final class Constants {\n  public static final double MIN_SPEED_OUTPUT = -1.0;\n  public static final double MAX_SPEED_OUTPUT = 1.0;\n  public static final int FEEDER_MOTOR_ID = 36;\n  public static final int INTAKE_LAUNCHER_MOTOR_ID = 12;\n  public static final double INTAKING_FEEDER_VOLTAGE = 6;\n  public static final int DRIVER_CONTROLLER_PORT = 0;\n  public static final double ROTATE_SPEED = 0.2;\n}',
+        containerId: 'code-viewer-3-3'
+      });
+      CodeViewer({
+        starterCode: 'public class ShooterSubsystem extends SubsystemBase{\n  private final boolean enabled;\n  private double lastCommandedRpm = 0.0;\n}',
+        containerId: 'code-viewer-3-4'
+      });
+      CodeViewer({
+      starterCode: 'public final class Constants {\n\n  public static class Forcefield {\n    public static final double angleThreshold = 0.5; // in deg/s\n    public static final double speedThreshold = 0.5; // in m/s\n  }\n\n  public static class OperatorConstants {\n    public static final int kDriverControllerPort = 0;\n    public static final int shooterMotorID = 10;\n    public static final double shooterMotorSpeed = 10.00;\n  }\n}',
+      containerId: 'code-viewer-3-5'
+    });
     </script>
     <script src="../js/main.js"></script>
   </body>
