@@ -3,6 +3,22 @@ import { javascript } from 'https://esm.sh/@codemirror/lang-javascript@6';
 import { oneDark } from 'https://esm.sh/@codemirror/theme-one-dark@6';
 import { EditorState } from 'https://esm.sh/@codemirror/state@6';
 
+// --- Shared stats store (used by Quiz, CodeEditor, and Summary) ---
+export const stats = {
+  quiz: {},        // keyed by containerId -> { attempts, highScore, totalQuestions }
+  codeEditor: {}    // keyed by containerId -> { attempts, hintUsed }
+};
+
+function getQuizStats(id) {
+  if (!stats.quiz[id]) stats.quiz[id] = { attempts: 0, highScore: 0, totalQuestions: 0 };
+  return stats.quiz[id];
+}
+
+function getCodeEditorStats(id) {
+  if (!stats.codeEditor[id]) stats.codeEditor[id] = { attempts: 0, hintUsed: false };
+  return stats.codeEditor[id];
+}
+
 export function TextBlock({ heading, body }) {
   const container = document.getElementById('lesson-content');
   const block = document.createElement('div');
@@ -15,6 +31,9 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
   const quizDiv = document.createElement('div');
   quizDiv.className = 'quiz-block';
   container.appendChild(quizDiv);
+
+  const s = getQuizStats(containerId);
+  s.totalQuestions = questions.length;
 
   let currentQuestion = 0;
   let score = 0;
@@ -74,6 +93,10 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
   }
 
   function showResults() {
+    // Record this completed attempt
+    s.attempts++;
+    if (score > s.highScore) s.highScore = score;
+
     const percent = Math.round((score / questions.length) * 100);
     quizDiv.innerHTML = `
       <h3>You got ${score}/${questions.length} correct.</h3>
@@ -81,9 +104,9 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
         <div class="score-bar-fill" style="width: ${percent}%"></div>
       </div>
       <p class="score-percent">${percent}%</p>
-      <button class="retry-btn">Try Again</button>
+      <button class=".btn">Try Again</button>
     `;
-    quizDiv.querySelector('.retry-btn').onclick = () => {
+    quizDiv.querySelector('.btn').onclick = () => {
       currentQuestion = 0;
       score = 0;
       renderQuestion();
@@ -112,26 +135,34 @@ export function CodeViewer({ starterCode = '', containerId = 'lesson-content'}) 
 
   return view;
 }
-export function CodeEditor({ starterCode = '', answerCode = '', containerId = 'lesson-content' }) {
+export function CodeEditor({ starterCode = '', answerCode = '', hint = '',containerId = 'lesson-content' }) {
   const container = document.getElementById(containerId);
   const wrapper = document.createElement('div');
   wrapper.className = 'code-editor-block';
   container.appendChild(wrapper);
+
+  const s = getCodeEditorStats(containerId);
 
   const view = new EditorView({
     doc: starterCode,
     extensions: [basicSetup, javascript(), oneDark],
     parent: wrapper
   });
-
+  const hintBtn = document.createElement('button');
   const checkBtn = document.createElement('button');
+  hintBtn.className = "btn";
+  hintBtn.textContent = "Hint"
   checkBtn.className = 'btn';
   checkBtn.textContent = 'Check';
   wrapper.appendChild(checkBtn);
+  wrapper.appendChild(hintBtn);
 
   const resultText = document.createElement('p');
+  const hintText = document.createElement('p');
+  hintText.className = "result-text";
   resultText.className = 'result-text';
   wrapper.appendChild(resultText);
+  wrapper.appendChild(hintText);
 
   function normalize(code) {
     return code
@@ -144,6 +175,8 @@ export function CodeEditor({ starterCode = '', answerCode = '', containerId = 'l
   }
 
   checkBtn.onclick = () => {
+    s.attempts++;
+
     const viewContent = normalize(view.state.doc.toString());
     const expected = normalize(answerCode);
 
@@ -167,6 +200,11 @@ export function CodeEditor({ starterCode = '', answerCode = '', containerId = 'l
       console.log('ANSWER around mismatch:', JSON.stringify(expected.slice(Math.max(0, i - 20), i + 20)));
     }
   };
+  hintBtn.onclick = () => {
+    s.hintUsed = true;
+    hintText.textContent = hint;
+    hintText.style.color = "yellow";
+  }
 
   return view;
 }
@@ -197,6 +235,9 @@ export function PageNav({ containerId = 'lesson-content' }) {
     backBtn.disabled = index === 0;
     nextBtn.disabled = index === pages.length - 1;
 
+    // Let any Summary blocks on the now-visible page refresh themselves
+    container.dispatchEvent(new CustomEvent('pagechange', { detail: { index } }));
+
     container.scrollIntoView({ behavior: 'smooth' });
   }
 
@@ -215,4 +256,35 @@ export function PageNav({ containerId = 'lesson-content' }) {
   };
 
   showPage(currentPage);
+}
+
+// --- Summary: shows quiz + code editor stats for this lesson ---
+export function Summary({ quizId, codeEditorId, containerId = 'lesson-content' }) {
+  const container = document.getElementById(containerId);
+  const summaryDiv = document.createElement('div');
+  summaryDiv.className = 'summary-block';
+  container.appendChild(summaryDiv);
+
+  function render() {
+    const q = stats.quiz[quizId] || { attempts: 0, highScore: 0, totalQuestions: 0 };
+    const c = stats.codeEditor[codeEditorId] || { attempts: 0, hintUsed: false };
+
+    summaryDiv.innerHTML = `
+      <ul class="summary-list">
+        <li><strong>Quiz Attempts:</strong> ${q.attempts}</li>
+        <li><strong>Highest Quiz Score:</strong> ${q.highScore}${q.totalQuestions ? ' / ' + q.totalQuestions : ''}</li>
+        <li><strong>Code Editor Attempts:</strong> ${c.attempts}</li>
+        <li><strong>Hint Used:</strong> ${c.hintUsed ? 'Yes' : 'No'}</li>
+      </ul>
+    `;
+  }
+
+  // Re-render whenever the page nav switches pages (in case this page becomes visible again)
+  const lessonContainer = document.getElementById('lesson-content');
+  if (lessonContainer) {
+    lessonContainer.addEventListener('pagechange', render);
+  }
+
+  render();
+  return summaryDiv;
 }
