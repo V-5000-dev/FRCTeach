@@ -14,7 +14,7 @@
     <main class="page-content" id="lesson-content">
       <div class="page">
         <h2>Fundamentals: The Basics of Commands, CommandScheduler and Subsystems.</h2>
-        <p>This course will teach you the basics about Commands and Subsystems. Commands and Subsystems are the Fundamental elements of every codebase.</p>
+        <p>This course will teach you the basics about Commands and Subsystems. Commands and Subsystems are the fundamental elements of every codebase.</p>
       </div>
 
       <div class="page">
@@ -23,20 +23,20 @@
         <h3>Parts of a Command</h3>
         <p>A command has multiple important parts. The class contains the name of the command as well as a declaration of the extension of the command function.</p>
         <div id="code-viewer-1-1"></div>
-        <p>Commands should have a getRequirements method. This method ensures 2 different commands don't communicate with the same subsystem. If this happens, the susbsystem could send information to both of them instead of only one.</p>
+        <p>Commands should call addRequirements in their constructor. This ensures 2 different commands don't try to control the same subsystem simultaneously, which could cause conflicting outputs to the subsystem's hardware.</p>
         <div id="code-viewer-1-2"></div>
         <p>Each command also typically has 4 methods: initialize, execute, isFinished, and end.</p>
         <div id="code-viewer-1-3"></div>
-        <p>initialize is called only once when the robot is enabled. In our command, we might call a function in our driveTrain subsystem to start accelerating.</p>
+        <p>initialize is called only once when the command is first scheduled. In our command, we might call a function in our driveTrain subsystem to start accelerating.</p>
         <div id="code-viewer-1-4"></div>
         <p>execute runs repeatedly while the command is active. In our command, we might call a function in our driveTrain subsystem to remain at a constant speed.</p>
         <div id="code-viewer-1-5"></div>
         <p>The boolean function isFinished also runs repeatedly while the command is active. You can  think of it as a while true loop. If the function returns "true", execute will stop running and the method end will run. In our command, we might want to run the command continually, as we want our robot to keep driving. In a shoot command, isFinished might be used to check if all materials have been shot.</p>
         <div id="code-viewer-1-6"></div>
-        <p>The function end runs one time when isFinished returns true. Even if our isFinished method cannot return "true", the end method can be used when stopping the robot.</p>
+        <p>The function end runs one time when isFinished returns true, or when the command is interrupted by another command. The boolean parameter interrupted indicates which case occurred. Even when isFinished always returns false, end will still be called if the command is interrupted.</p>
         <div id="code-viewer-1-7"></div>
-        <h3>@Overwrite</h3>
-        <p>You might have noticed the @overwrite tag at the start of these methods. The overwrite tag simply tells the program it's overwriting the parent class, command. The overwrite tag is not required but can prevent silent errors.</p>
+        <h3>@Override</h3>
+        <p>You might have noticed the @Override annotation at the start of these methods. The @Override annotation tells the compiler that this method is intentionally overriding a method from the parent class Command. The @Override annotation is not required but helps catch errors by verifying that the method signature actually matches a parent class method.</p>
       </div>
 
       <div class="page">
@@ -46,19 +46,19 @@
       </div>
       <div class="page">
         <h2>Page 3: Executing Commands </h2>
-        <p>Now that we've created a Command, lets find out how to run it. Commands are typically either run from a controller input or when your robot first starts up via the robotcontainer class.</p>
+        <p>Now that we've created a Command, let's find out how to run it. Commands are typically either run from a controller input or when your robot first starts up via the RobotContainer class.</p>
         <div id="code-viewer-3-1"></div>
         <div id="code-viewer-3-2"></div>
         <p>RobotInit and robotPeriodic are also special methods of the robot class.</p>
-        <p>Commands are executed through the CommandScheduler. Once the command is executed, it will run the instantiate method.</p>
+        <p>Commands are executed through the CommandScheduler. Once the command is scheduled, it will run the initialize method.</p>
         <div id="code-viewer-3-3"></div>
       </div>
       <div class="page">
         <h2>Page 4: Subsystems</h2>
-        <p>What exactly is a subsystem? Well, it's a piece of code that operates a specific piece of the robot. For example, you might have a subsystem for the DriveTrain, intake, or shooter. Subsystems are structured similar to a command, although with some differences.</p>
-        <p>The declaration of a subsystem command looks like this:</p>
+        <p>What exactly is a subsystem? Well, it's a piece of code that operates a specific piece of the robot. For example, you might have a subsystem for the DriveTrain, intake, or shooter. Subsystems are structured similarly to a command, although with some differences.</p>
+        <p>The declaration of a subsystem looks like this:</p>
         <div id="code-viewer-4-1"></div>
-        <p> Subsystems also have a special method called periodic. Periodic functions very similar to execute, just on the subsystem level. Periodic's purpose is typically already covered by the command running it, so it is not always used.</p>
+        <p> Subsystems also have a special method called periodic. Periodic functions very similarly to execute, just on the subsystem level. Periodic's purpose is typically already covered by the command running it, so it is not always used.</p>
         <div id="code-viewer-4-2"></div>
         <p>Subsystems should also be defined in RobotContainer. RobotContainer is a standard place to store them as we only want one subsystem since they are responsible for one part. You don't want multiple subsystems controlling your driveTrain. RobotContainer also allows Commands to reference Subsystems.</p>
         <div id="code-viewer-4-3"></div>
@@ -70,7 +70,7 @@
         <h3>Your code must meet the following requirements:</h3>
         <p>RobotContainer needs to have all declarations.</p>
         <p>FeederSystem SetVoltage must run once at the start of the Command.</p>
-        <p>FeederSystem Stop must run if boolean interrupted is true.</P>
+        <p>FeederSystem Stop must run if boolean interrupted is true.</p>
           <p>No code needs to be rewritten or removed. Keep all existing code unmodified. Do not add or remove comments. Do not reorder the code in any way. Simply add the correct missing code in the correct position.</p>
         <h3>Limitations</h3>
         <p>It is important to note that this example has some limitations</p>
@@ -130,7 +130,7 @@
         containerId: 'code-viewer-3-1'
       });
       CodeViewer({
-        starterCode: 'package frc.robot;\nimport edu.wpi.first.wpilibj2.command.Command;\nimport edu.wpi.first.wpilibj2.command.CommandScheduler;\n\npublic class RobotContainer {\n  private final Command driveForward;\n\n  public RobotContainer(){\n    driveForward = new DriveForward();\n    CommandScheduler.getInstance().schedule(driveForward);\n  }\n}',
+        starterCode: 'package frc.robot;\nimport edu.wpi.first.wpilibj2.command.Command;\nimport edu.wpi.first.wpilibj2.command.CommandScheduler;\n\npublic class RobotContainer {\n  private final DriveTrainSubsystem driveTrain;\n  private final Command driveForward;\n\n  public RobotContainer(){\n    driveTrain = new DriveTrainSubsystem();\n    driveForward = new DriveForward(driveTrain);\n    CommandScheduler.getInstance().schedule(driveForward);\n  }\n}',
         containerId: 'code-viewer-3-2'
       });
       CodeViewer({
@@ -138,7 +138,7 @@
         containerId: 'code-viewer-4-1'
       });
       CodeViewer({
-        starterCode: 'package frc.robot.subsystems;\nimport edu.wpi.first.wpilibj2.command.SubsystemBase;\nimport com.revrobotics.spark.SparkMax;\nimport com.revrobotics.spark.config.SparkBaseConfig;\nimport com.revrobotics.spark.config.SparkMaxConfig;\nimport edu.wpi.first.wpilibj.drive.DifferentialDrive;\nimport edu.wpi.first.math.MathUtil;\n\npublic class IntakeSubsystem extends SubsystemBase{\n  private final SparkMax leftLeader;\n  private final SparkMax rightLeader;\n  private final DifferentialDrive drive;\n\n  public Intake(SparkMax leftLeader, SparkMax rightLeader){\n    this.leftLeader = leftLeader;\n    this.rightLeader = rightLeader;\n    drive = new DifferentialDrive(leftLeader, rightLeader);\n  }\n  public void drive(double leftSpeed, double rightSpeed){\n    drive.tankDrive(MathUtil.clamp(leftSpeed, -1.0, 1.0), MathUtil.clamp(rightSpeed, -1.0, 1.0), false);\n  }\n  public void stop(){\n    drive.stopMotor();\n  }\n}',
+        starterCode: 'package frc.robot.subsystems;\nimport edu.wpi.first.wpilibj2.command.SubsystemBase;\nimport com.revrobotics.spark.SparkMax;\n\npublic class IntakeSubsystem extends SubsystemBase{\n  private final SparkMax intakeMotor;\n\n  public IntakeSubsystem(SparkMax intakeMotor){\n    this.intakeMotor = intakeMotor;\n  }\n  public void run(double speed){\n    intakeMotor.set(speed);\n  }\n  public void stop(){\n    intakeMotor.set(0);\n  }\n  @Override\n  public void periodic(){\n \n  }\n}',
         containerId: 'code-viewer-4-2'
       });
       CodeViewer({
@@ -147,7 +147,7 @@
       });
       CodeEditor({
         starterCode: 'public class Robot extends TimedRobot{\n  private RobotContainer robotContainer;\n  public void robotInit()\n  {\n    robotContainer = new RobotContainer();\n  }\n  public void robotPeriodic()\n  {\n    CommandScheduler.getInstance().run();\n  }\n}\n\npublic class RobotContainer {\n  private final FeederSubsystem feederSubsystem;\n  private final IntakeSubsystem intake;\n  public RobotContainer(){\n    intake = new Intake(feederSubsystem);\n  }\n}\n\npublic final class Constants{\n  public static final double INTAKING_FEEDER_VOLTAGE = 6;\n}\n\npublic class Intake extends Command {\n  private final FeederSubsystem feeder;\n  public Intake(FeederSubsystem feeder){\n    this.feeder = feeder;\n    addRequirements(feeder);\n  }\n  @Override\n  public void initialize()\n  {\n    \n  }\n  @Override\n  public void end(boolean interrupted){\n    \n  }\n  @Override\n  public boolean isFinished()\n  {\n    //Intake runs forever through the match \n    return false;\n  }\n\n}\n\npublic class FeederSubsystem extends SubsystemBase{\n  private final SparkFlex feedMotor;\n\n  public FeederSubsystem() {\n    feedMotor = new SparkFlex(0, MotorType.kBrushless);\n    SparkFlexConfig config = new SparkFlexConfig();\n    feedMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);\n  }\n\n  public void setVoltage(double volts){\n    feedMotor.setVoltage(volts);\n  }\n  public void stop(){\n    feedMotor.set(0);\n  }\n  public void periodic()\n  {\n    //(Leave blank)\n  }\n}',
-        answerCode: 'public class Robot extends TimedRobot{\n  private RobotContainer robotContainer;\n  public void robotInit()\n  {\n    robotContainer = new RobotContainer();\n  }\n  public void robotPeriodic()\n  {\n    CommandScheduler.getInstance().run();\n  }\n}\n\npublic class RobotContainer {\n  private final FeederSubsystem feederSubsystem;\n  private final IntakeSubsystem intake;\n    public RobotContainer(){\n    intake = new Intake(feederSubsystem);\n    feederSubsystem = new FeederSubsystem();\n  }\n}\n\npublic final class Constants{\n  public static final double INTAKING_FEEDER_VOLTAGE = 6;\n}\n\npublic class Intake extends Command {\n  private final FeederSubsystem feeder;\n  public Intake(FeederSubsystem feeder){\n    this.feeder = feeder;\n    addRequirements(feeder);\n  }\n  @Override\n  public void initialize()\n  {\n    feeder.setVoltage(Constants.INTAKING_FEEDER_VOLTAGE);\n  }\n  @Override\n  public void end(boolean interrupted){\n    feeder.stop();\n  }\n  @Override\n  public boolean isFinished()\n  {\n    //Intake runs forever through the match \n    return false;\n  }\n\n}\n\npublic class FeederSubsystem extends SubsystemBase{\n  private final SparkFlex feedMotor;\n\n  public FeederSubsystem() {\n    feedMotor = new SparkFlex(0, MotorType.kBrushless);\n    SparkFlexConfig config = new SparkFlexConfig();\n    feedMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);\n  }\n\n  public void setVoltage(double volts){\n    feedMotor.setVoltage(volts);\n  }\n  public void stop(){\n    feedMotor.set(0);\n  }\n  public void periodic()\n  {\n    //(Leave blank)\n  }\n}',
+        answerCode: 'public class Robot extends TimedRobot{\n  private RobotContainer robotContainer;\n  public void robotInit()\n  {\n    robotContainer = new RobotContainer();\n  }\n  public void robotPeriodic()\n  {\n    CommandScheduler.getInstance().run();\n  }\n}\n\npublic class RobotContainer {\n  private final FeederSubsystem feederSubsystem;\n  private final IntakeSubsystem intake;\n    public RobotContainer(){\n    feederSubsystem = new FeederSubsystem();\n    intake = new Intake(feederSubsystem);\n  }\n}\n\npublic final class Constants{\n  public static final double INTAKING_FEEDER_VOLTAGE = 6;\n}\n\npublic class Intake extends Command {\n  private final FeederSubsystem feeder;\n  public Intake(FeederSubsystem feeder){\n    this.feeder = feeder;\n    addRequirements(feeder);\n  }\n  @Override\n  public void initialize()\n  {\n    feeder.setVoltage(Constants.INTAKING_FEEDER_VOLTAGE);\n  }\n  @Override\n  public void end(boolean interrupted){\n    feeder.stop();\n  }\n  @Override\n  public boolean isFinished()\n  {\n    //Intake runs forever through the match \n    return false;\n  }\n\n}\n\npublic class FeederSubsystem extends SubsystemBase{\n  private final SparkFlex feedMotor;\n\n  public FeederSubsystem() {\n    feedMotor = new SparkFlex(0, MotorType.kBrushless);\n    SparkFlexConfig config = new SparkFlexConfig();\n    feedMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);\n  }\n\n  public void setVoltage(double volts){\n    feedMotor.setVoltage(volts);\n  }\n  public void stop(){\n    feedMotor.set(0);\n  }\n  public void periodic()\n  {\n    //(Leave blank)\n  }\n}',
         hint: "You need to create a new instance of FeederSubsystem after the instance of intake. On initialize, you need to call setVoltage to the voltage found in constants (Remember how we call a variable from a different class).",
         containerId: 'code-quiz-5-1'
       });
@@ -165,16 +165,16 @@
           },
           {
             question: "Why should Commands have a getRequirements method?",
-            options: ['To ensure Subsystems do not output to more then Command.', 'To ensure Commands do not output to more then one Subsystems.', 'To ensure Subsystems do not use more then Constant.', 'To ensure Commands do not use more then Constant.',],
+            options: ['To ensure two Commands do not control the same Subsystem simultaneously.', 'To ensure Commands do not output to more than one Subsystem.', 'To ensure Subsystems do not use more than one Constant.', 'To ensure Commands do not use more than one Constant.',],
             answer: 0
           },
           {
-            question: "The method Periodic() has a very simmilar function to _ in Subsystems.",
+            question: "The method periodic() has a very similar function to _ in Commands.",
             options: ['execute()', 'initialize()', 'end()', 'isFinished()'],
             answer: 0
           },
           {
-            question: "Subsystems can be discribed as:",
+            question: "Subsystems can be described as:",
             options: ['Code that is used to test other commands.', 'Code that directly communicates with the robot.', 'Code that is used to declare other code.', 'Code for a specific part of the robot.'],
             answer: 3
           },   

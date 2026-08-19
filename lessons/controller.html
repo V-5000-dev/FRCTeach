@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FRCTeach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../css/style.css"/>
+  </head>
+  <body>
+    <div id="header"></div>
+    <main class="page-content" id="lesson-content">
+      <div class="page">
+        <h2>Page 1: Setting up a controller</h2>
+        <p>At the top of the file, you'll need to add the following imports. The specific import will depend on the controller you are using. You'll also need to import all commands and subsystems you will need to reference. We'll just use one subsystem and a handful of commands for this example.</p>
+        <div id="code-viewer-1-1"></div>
+        <p>We'll then create the class controller and a static void method to declare all bindings:</p>
+        <div id="code-viewer-1-2"></div>
+        <p>Typically the controller commands are divided between the driver and operator. We will create 2 instances of the controller to bind them to different functions.</p>
+      </div>
+      <div class = "page">
+        <h2>Page 2: Controller Bindings</h2>
+        <p>Now that we've created instances of everything we need, we can bind the controllers buttons to specific actions.</p>
+        <p>The simplest action is to bind an action to a controller button:</p>
+        <div id="code-viewer-2-1"></div>
+        <p>Let's take a look at this line. While the B and X buttons are pressed, a new instance of the command Rotate is created using the driveSubsystem. The true or false boolean determines if the robot should rotate clockwise or not.</p>
+        <p>We can also change the function from whileTrue to onTrue or toggleOnTrue. onTrue only responds on press, and toggleOnTrue flipps from a true to false state.</p>
+        <div id="code-viewer-2-3"></div>
+        <p>Let's also bind our D-pad:</p>
+        <div id="code-viewer-2-4"></div>
+        <p>Here, our D-pad changes the throttle based on whether it's pressed up or down. ManageThrottle only takes a direction value because it modifies a static throttle variable rather than directly controlling hardware. The Drive command reads that variable on each execute loop and applies it as a speed multiplier.</p>
+        <p>We can also bind our triggers on the controller. We'll bind them to the operator controller, as the operator is in charge of shooting, while the driver is in charge or driving.</p>
+        <div id="code-viewer-2-5"></div>
+      </div>
+    </main>
+
+    <script type="module">
+      import { CodeViewer, CodeEditor, PageNav, Quiz } from '../js/components.js';
+
+      PageNav({ containerId: 'lesson-content' });
+
+      CodeViewer({
+        starterCode: 'import edu.wpi.first.wpilibj2.command.Commands;\nimport edu.wpi.first.wpilibj2.command.InstantCommand;\nimport edu.wpi.first.wpilibj2.command.button.CommandXboxController;\import frc.robot.commands.ManageThrottle;\nnimport edu.wpi.first.wpilibj2.command.button.Trigger;\nimport frc.robot.subsystems.CANDriveSubsystem;\nimport frc.robot.commands.ManageThrottle;\nimport frc.robot.commands.DriveCMDS.Drive;\nimport frc.robot.commands.DriveCMDS.MoveForward;\nimport frc.robot.commands.DriveCMDS.Rotate;',
+        containerId: 'code-viewer-1-1'
+      });
+      CodeViewer({
+        starterCode: 'public class Controller{\n  private Controller(){}\n  public static void configureBindings(\n    CommandXboxController driverController,\n    CommandXboxController operatorController,\n    CANDriveSubsystem driveSubsystem) {\n  }',
+        containerId: 'code-viewer-1-2'
+      });
+      CodeViewer({
+        starterCode: 'driverController.b().whileTrue(new Rotate(driveSubsystem, true));\ndriverController.x().whileTrue(new Rotate(driveSubsystem, false));',
+        containerId: 'code-viewer-2-1'
+      });
+      CodeViewer({
+        starterCode: 'driverController.b().whileTrue(new Rotate(driveSubsystem, true));\ndriverController.x().onTrue(new (driveSubsystem));',
+        containerId: 'code-viewer-2-2'
+      });
+      CodeViewer({
+        starterCode: 'driverController.povUp().whileTrue(new ManageThrottle(1));\ndriverController.povDown().whileTrue(new ManageThrottle(-1));',
+        containerId: 'code-viewer-2-4'
+      })
+      CodeViewer({
+        starterCode: 'operatorController.leftTrigger().whileTrue(new LaunchSequence(shooterSubsystem, feederSubsystem));',
+        containerId: 'code-viewer-2-4'
+      })
+
+      
+    </script>
+    <script src="../js/main.js"></script>
+  </body>
+  
+</html>
