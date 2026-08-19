@@ -14,85 +14,92 @@
     <main class="page-content" id="lesson-content">
       <div class="page">
         <h2>Fundamentals: Java in WPILib.</h2>
-        <p>Learn how we use Java's specific variable and method tipes in the robot's code.</p>
+        <p>Learn how we use Java's specific variable and method types in the robot's code.</p>
       </div>
 
       <div class="page">
         <h2>Page 1: Double and Static Type</h2>
-        <p>Java has 3 seperate variable tipes to store numbers: int, float, and double. Int is used to store whole number values for motor or port IDs. We use the type Double to store all other values instead float. Floats only store 8 bytes of data, while double stores 16. This allows our variables to be as percise as possible. </p>
-        <p>For example, lets say you had a simple script to calculate the area of a circle. If you had your pi variable as an int, you could store only 3. If you had it as a float, you could store up to 3.141592. The double type will allow us to use the most percise variable 3.141592653589793.</p>
+        <p>Java has several variable types to store numbers, but in this lesson we'll focus on three: int, float, and double. Int is used to store whole number values for motor or port IDs. We use the type double to store all other values instead of float. A float only stores 4 bytes of data, while a double stores 8 bytes. This allows our variables to be as precise as possible.</p>
+        <p>For example, let's say you had a simple script to calculate the area of a circle. If you had your pi variable as an int, you could store only 3. If you had it as a float, you could store up to about 3.1415927 with more limited precision. The double type will allow us to use the more precise variable 3.141592653589793.</p>
         <div id="code-viewer-1-1"></div>
         <h3>Static Type</h3>
-        <p>The class Constants() stores all the variables for the codebase. We declare these variables with the static modifier, which means there is only one copy of each varible shared across all instances of the class. This allows other classes to acess the same value without creating an instance of the Constants class. This is done so we only have 1 value for our variables. We don't want to have seperate motorSpeed variables, for example, used in different classes. We need one value for our motorSpeed aross all classes.</p>
-        <p>We can also use static methods and classes. Simmilar to a static variabke, a static method belongs to the class it is declared in rather then an object, meaning it can be called without creating an instance of the class. We can also use static nested classes, which are classes declared inside of another class that do not require an instance of the outer class to be called. Static methods are typically used to perform a specific action, while a static nested class is used to define another type of object, that is still related to the outside class.</p>
+        <p>The class Constants stores all the variables for the codebase. We declare these variables with the static modifier, which means there is only one copy of each variable shared across all instances of the class. This allows other classes to access the same value without creating an instance of the Constants class. This is done so we only have 1 value for our variables. We don't want to have separate motorSpeed variables, for example, used in different classes. We need one value for our motorSpeed across all classes.</p>
+        <p>We can also use static methods and classes. Similar to a static variable, a static method belongs to the class it is declared in rather than an object, meaning it can be called without creating an instance of the class. We can also use static nested classes, which are classes declared inside of another class that do not require an instance of the outer class to be called. Static methods are typically used to perform a specific action, while a static nested class is used to define another type of object, that is still related to the outside class.</p>
         <p>Finally, we can also import static classes and methods statically using import static. This allows us to use methods and variables without having the class name as a prefix. Note that doing this may make it harder to understand where variables came from.</p>
         <div id="code-viewer-1-2"></div>
       </div>
       <div class ="page">
         <h2>Page 2: Static Classes Continued</h2>
-        <p>Lets take a look at an example of how we use static classes. We only use static classes in a few of our classes, such as robot, robotcontainer, main and constraints.</p>
+        <p>Let's take a look at an example of how we use static classes. We only use static classes in a few of our classes, such as robot, robotcontainer, main and constraints.</p>
         <div id="code-viewer-2-1"></div>
-        <p>Notice that we can also input variables directly:</p>
+        <p>Notice that we can also import variables directly:</p>
         <div id="code-viewer-2-2"></div>
-        <p>In this script we do not use a static import, requring to prefix the variables with Accessibles. :</p>
+        <p>In this script we do not use a static import, requiring us to prefix the variables with Accessibles:</p>
         <div id="code-viewer-2-3"></div>
-        <p>(Accessibles is a seperate class from Constants, that stores only some specific values)</p>
-        <p>Notice in both of the scripts everything in Accessibles/Constants is static to allow all other scripts to acess and modify them.</p>
+        <p>(Accessibles is a separate class from Constants, that stores only some specific values)</p>
+        <p>Notice that in both scripts, the fields in Accessibles/Constants are static, so any other script can access them without creating an instance. Only the non-final field in Accessibles (prefireOn) can actually be modified after the fact — the static final fields in Constants can be read, but never reassigned.</p>
       </div>
       <div class = "page">
         <h2>Page 3: Final Keyword</h2>
-        <p>You may have also noticed some variables, methods, and classes have the keyword final. Variables with the keyword final cannot be changed after assigned. Lets take a look at our example of pi from eariler in the lesson:</p>
+        <p>You may have also noticed some variables, methods, and classes have the keyword final. Variables with the keyword final cannot be changed after being assigned. Let's take a look at our example of pi from earlier in the lesson:</p>
         <div id="code-viewer-3-1"></div>
-        <p>Since the value of pi should never change, we can add the final keyword. It is to note that the final keyword is not required, but it acts as a safety net to prevent it from being assigned to a different value. </p>
-        <p>Additonally, if we don't want classes to create instances of pi, we can add the static keyword. The static final pi, or a constant, is now a value that is assigned once across the entire code, and is never modified.</p>
+        <p>Since the value of pi should never change, we can add the final keyword. It is important to note that the final keyword is not required, but it acts as a safety net to prevent it from being assigned to a different value.</p>
+        <p>Additionally, if we want one shared copy of pi across the whole program instead of a separate copy per object, we can add the static keyword. The static final pi, or a constant, is now a value that is assigned once across the entire code, and is never modified.</p>
         <div id="code-viewer-3-2"></div>
-        <p>Almost all of our variables stored in constants are applied with the public static keywords, hence the name of the class.</p>
+        <p>Almost all of our variables stored in Constants are applied with the public static final keywords: it's the final keyword that makes them true constants, hence the name of the class.</p>
         <div id="code-viewer-3-3"></div>
-        <h3>Class Specific Varibles</h3>
-        <p>Class specific variables are typically stored with the keywords private final. We don't need other classes to acess class specific variables, but we still want the one value to be unchanged in the class. </p>
+        <h3>Class Specific Variables</h3>
+        <p>Class specific variables are typically stored with the keywords private final. We don't need other classes to access class specific variables, but we still want the one value to be unchanged in the class.</p>
         <div id="code-viewer-3-4"></div>
-        <p>In our codebase, as well as many others, we name class specific varibles with a lowercase first letter and captal for the other first letter of other words. We name Constants in all captal letters seperated by a underscore.</p>
+        <p>In our codebase, as well as many others, we name class specific variables with a lowercase first letter, capitalizing the first letter of each following word (camelCase). We name Constants in all capital letters separated by an underscore (SCREAMING_SNAKE_CASE).</p>
         <h3>Final Methods and Classes</h3>
         <p>Final methods cannot be overridden by subclasses, or inherited and modified. Final classes cannot be extended. Let's take these 2 classes:</p>
         <div id="code-viewer-3-5"></div>
-        <p>Class constants cannot be extended due to it being final. Forecefield and OperatorConstants could technically be extended, since they are final. Both are also static nested classes, meaning they belong directly to Constants instead of any instatnce of constants.</p>
-        <p>THe fields inside the script are final, so they cannot be ressaigned to a new value. They are also static, meaning each one exists as a single, shared copy on the class. This lets you write Constants.Forcefield.angleThreshold directly.</p>
+        <p>The outer Constants class cannot be extended, since it is declared final. Forcefield and OperatorConstants, on the other hand, could technically be extended, since they are declared as plain static classes rather than final ones. Both are also static nested classes, meaning they belong directly to Constants instead of any instance of Constants.</p>
+        <p>The fields inside the script are final, so they cannot be reassigned to a new value. They are also static, meaning each one exists as a single, shared copy on the class. This lets you write Constants.Forcefield.angleThreshold directly.</p>
 
       </div>
-      <div class = "page"></div>
-      <h3>Page 4: Putting it together</h3>
-      Using what you've learned so far, complete the Constants class below</p>
-      <h3>Your code must meet the following requirements:</h3>
-      <p>Constants must correctly define 2 varibles with the proper keywords: MOTOR_SPEED and MOTOR_ID.</p>
-      <p>No code needs to be rewritten or removed. Keep all existing code unmodified. Do not add or remove comments. Do not reorder the code in any way. Simply add the correct missing code in the correct position.</p>
-      <h3>Limitations</h3>
-      <p>It is important to note that this example has some limitations</p>
-      <p>This is a simplified version of a real codebase.</p>
-      <p>Import statements are removed for simplicty.</p>
-      <div id="code-quiz-4-1"></div>
-      <h3>Your code must meet the following requirements:</h3>
-      <p>Drive is missing all it's declared varibles. Your code needs to correctly declare all varibles.</p>
-      <p>No code needs to be rewritten or removed. Keep all existing code unmodified. Do not add or remove comments. Do not reorder the code in any way. Simply add the correct missing code in the correct position.</p>
-      <h3>Limitations</h3>
-      <p>It is important to note that this example has some limitations</p>
-      <p>This is a simplified version of a real codebase.</p>
-      <p>In Java, you cannot have multiple classes in one file, as it is represented here.</p>
-      <div id="code-quiz-4-2"></div>
-      
-      
+      <div class="page">
+        <h2>Page 4: Putting it together</h2>
+        <p>Using what you've learned so far, complete the Constants class below</p>
+        <h3>Your code must meet the following requirements:</h3>
+        <p>Constants must correctly define 2 variables with the proper keywords: MOTOR_SPEED and MOTOR_ID. MOTOR_SPEED should equal to 0.7, and MOTOR_ID should equal 10.</p>
+        <p>No code needs to be rewritten or removed. Keep all existing code unmodified. Do not add or remove comments. Do not reorder the code in any way. Simply add the correct missing code in the correct position.</p>
+        <h3>Limitations</h3>
+        <p>It is important to note that this example has some limitations.</p>
+        <p>This is a simplified version of a real codebase.</p>
+        <p>Import statements are removed for simplicity.</p>
+        <div id="code-quiz-4-1"></div>
+        <p>Let's complete the Drive class below.</p>
+        <h3>Your code must meet the following requirements:</h3>
+        <p>Drive is missing all its declared variables. Your code needs to correctly declare all variables.</p>
+        <p>No code needs to be rewritten or removed. Keep all existing code unmodified. Do not add or remove comments. Do not reorder the code in any way. Simply add the correct missing code in the correct position.</p>
+        <h3>Limitations</h3>
+        <p>It is important to note that this example has some limitations.</p>
+        <p>This is a simplified version of a real codebase.</p>
+        <p>In Java, a file may not contain multiple public classes, as it does in this example.</p>
+        <div id="code-quiz-4-2"></div>
+        <p>Let's see what you've learned so far throughout the lesson.</p>
+        <div id="quiz-5-3"></div>
+      </div>
+      <div class="page">
+        <h2>Summary</h2>
+        <p>You've come to the end of the course. Here is your recap of the lesson:</p>
+        <div id="summary-6-1"></div>
+      </div>
 
     </main>
 
     <script type="module">
-      import { CodeEditor, CodeViewer, PageNav, Quiz } from '../js/components.js';
+      import { CodeEditor, CodeViewer, PageNav, Quiz, Summary } from '../js/components.js';
 
       PageNav({ containerId: 'lesson-content' });
       CodeViewer({
-        starterCode: 'public int pi = 3; \npublic float pi = 3.141592; \npublic double pi = 3.141592653589793;',
+        starterCode: 'public int pi = 3;\npublic float pi = 3.1415927f;\npublic double pi = 3.141592653589793;',
         containerId: 'code-viewer-1-1'
       });
       CodeViewer({
-      starterCode: 'import static frc.robot.Constants.OperatorConstants.*;\n\npublic class Rotate extends Command\n{\n  public void execute() {\n    double left;\n    double right;\n\n    if (clockwise) {\n      left = -ROTATE_SPEED;\n      right = ROTATE_SPEED;\n    } else {\n      left = ROTATE_SPEED;\n      right = -ROTATE_SPEED;\n    }\n  }\n}\n\n// ---- OR ----\n\nimport frc.robot.Constants.Constants.OperatorConstants;\n\npublic class Rotate extends Command\n{\n  public void execute() {\n    double left;\n    double right;\n\n    if (clockwise) {\n      left = -OperatorConstants.ROTATE_SPEED;\n      right = OperatorConstants.ROTATE_SPEED;\n    } else {\n      left = OperatorConstants.ROTATE_SPEED;\n      right = -OperatorConstants.ROTATE_SPEED;\n    }\n  }\n}',
+      starterCode: 'import static frc.robot.Constants.Constants.OperatorConstants.*;\n\npublic class Rotate extends Command\n{\n  public void execute() {\n    double left;\n    double right;\n\n    if (clockwise) {\n      left = -ROTATE_SPEED;\n      right = ROTATE_SPEED;\n    } else {\n      left = ROTATE_SPEED;\n      right = -ROTATE_SPEED;\n    }\n  }\n}\n\n// ---- OR ----\n\nimport frc.robot.Constants.Constants.OperatorConstants;\n\npublic class Rotate extends Command\n{\n  public void execute() {\n    double left;\n    double right;\n\n    if (clockwise) {\n      left = -OperatorConstants.ROTATE_SPEED;\n      right = OperatorConstants.ROTATE_SPEED;\n    } else {\n      left = OperatorConstants.ROTATE_SPEED;\n      right = -OperatorConstants.ROTATE_SPEED;\n    }\n  }\n}',
       containerId: 'code-viewer-1-2'
       });
       CodeViewer({
@@ -100,7 +107,7 @@
       containerId: 'code-viewer-2-1'
       });
       CodeViewer({
-      starterCode: 'import static frc.robot.Constants.Constants.FuelConstants.LAUNCHING_FEEDER_RPM',
+      starterCode: 'import static frc.robot.Constants.Constants.FuelConstants.LAUNCHING_FEEDER_RPM;',
       containerId: 'code-viewer-2-2'
       });
       CodeViewer({
@@ -124,47 +131,41 @@
         containerId: 'code-viewer-3-4'
       });
       CodeViewer({
-      starterCode: 'public final class Constants {\n\n  public static class Forcefield {\n    public static final double angleThreshold = 0.5; // in deg/s\n    public static final double speedThreshold = 0.5; // in m/s\n  }\n\n  public static class OperatorConstants {\n    public static final int kDriverControllerPort = 0;\n    public static final int shooterMotorID = 10;\n    public static final double shooterMotorSpeed = 10.00;\n  }\n}',
+      starterCode: 'public final class Constants {\n\n  public static class Forcefield {\n    public static final double ANGLE_THRESHOLD = 0.5; // in deg/s\n    public static final double SPEED_THRESHOLD = 0.5; // in m/s\n  }\n\n  public static class OperatorConstants {\n    public static final int DRIVER_CONTROLLER_PORT = 0;\n    public static final int SHOOTER_MOTOR_ID = 10;\n    public static final double SHOOTER_MOTOR_SPEED = 10.00;\n  }\n}',
       containerId: 'code-viewer-3-5'
     });
     CodeEditor({
       starterCode: 'public final class Constants {\n }',
-      answerCode: 'public final class Constants {\n  public static final double motorSpeed;\n public static final double MOTOR_ID}',
-      hint:'MOTOR_SPEED should be a double, since it can go into decimal values. MOTOR_ID, on the other hand, should be an int. Remember the other key words we applied to varibles in constants.',
+      answerCode: 'public final class Constants {\n  public static final double MOTOR_SPEED = 0.7;\n  public static final int MOTOR_ID = 10;\n}',
+      hint:'MOTOR_SPEED should be a double, since it can hold decimal values. MOTOR_ID, on the other hand, should be an int. Remember the other keywords we applied to variables in Constants, and remember that final fields must be given a value when they are declared.',
       containerId: "code-quiz-4-1"
     });
     CodeEditor({
-      starterCode: 'public final class Constants {\n }',
-      answerCode: 'public final class Constants {\n  public static final double motorSpeed;\n public static final double MOTOR_ID}',
-      hint:'MOTOR_SPEED should be a double, since it can go into decimal values. MOTOR_ID, on the other hand, should be an int. Remember the other key words we applied to varibles in constants.',
-      containerId: "code-quiz-4-1"
-    });
-    CodeEditor({
-    starterCode: 'package frc.robot.commands.DriveCMDS;\nimport edu.wpi.first.math.MathUtil;\nimport edu.wpi.first.wpilibj2.command.Command;\nimport edu.wpi.first.wpilibj2.command.button.CommandXboxController;\nimport frc.robot.subsystems.CANDriveSubsystem;\nimport frc.robot.subsystems.ControllerSubsystem;\nimport frc.robot.subsystems.DriveControllerSubsystem;\n//Necessary Import Commands\nimport static frc.robot.Constants.Constants.OperatorConstants.*;\n\npublic class Drive extends Command{\n\n  public Drive(CANDriveSubsystem driveSystem, DriveControllerSubsystem driveControllerSubsystem, CommandXboxController driverController, ControllerSubsystem controllerSubsystem) {\n    this.driveSubsystem = driveSystem;\n    this.driveControllerSubsystem = driveControllerSubsystem;\n    this.controllerSubsystem = controllerSubsystem;\n\n    addRequirements(driveSystem);\n  }\n  @Override\n  public void execute() {\n    // Read raw stick values and flip if needed\n    double left = controllerSubsystem.getAxisOrZero(DRIVER_LEFT_Y_AXIS, true);\n    double right = controllerSubsystem.getAxisOrZero(DRIVER_RIGHT_Y_AXIS, false);\n    if (DRIVER_LEFT_Y_INVERTED) left = -left;\n    if (DRIVER_RIGHT_Y_INVERTED) right = -right;\n\n    // Ignore tiny stick movements and scale to our speed limit\n    left = MathUtil.applyDeadband(left, DRIVE_DEADBAND) * DRIVE_SCALING;\n    right = MathUtil.applyDeadband(right, DRIVE_DEADBAND) * DRIVE_SCALING;\n\n    // Smooth out speed changes so the robot doesn\'t lurch\n    leftSmoothed = driveControllerSubsystem.applyAsymmetricSlew(leftSmoothed, left);\n    rightSmoothed = driveControllerSubsystem.applyAsymmetricSlew(rightSmoothed, right);\n\n    driveSubsystem.driveTank(leftSmoothed, rightSmoothed);\n  }\n}\n\npublic final class Constants()\n{\n  public static final class OperatorConstants{\n    public static final boolean DRIVER_LEFT_Y_INVERTED = false;\n    public static final boolean DRIVER_RIGHT_Y_INVERTED = false;\n    public static final double DRIVE_DEADBAND = 0.08;\n    public static double DRIVE_SCALING = 0.7;\n  }\n}',
-    answerCode: 'package frc.robot.commands.DriveCMDS;\nimport edu.wpi.first.math.MathUtil;\nimport edu.wpi.first.wpilibj2.command.Command;\nimport edu.wpi.first.wpilibj2.command.button.CommandXboxController;\nimport frc.robot.subsystems.CANDriveSubsystem;\nimport frc.robot.subsystems.ControllerSubsystem;\nimport frc.robot.subsystems.DriveControllerSubsystem;\n//Necessary Import Commands\nimport static frc.robot.Constants.Constants.OperatorConstants.*;\n\npublic class Drive extends Command{\n  private final CANDriveSubsystem driveSubsystem;\n  private final DriveControllerSubsystem driveControllerSubsystem;\n  private final ControllerSubsystem controllerSubsystem;\n  private double leftSmoothed = 0.0;\n  private double rightSmoothed = 0.0;\n\n  public Drive(CANDriveSubsystem driveSystem, DriveControllerSubsystem driveControllerSubsystem, CommandXboxController driverController, ControllerSubsystem controllerSubsystem) {\n    this.driveSubsystem = driveSystem;\n    this.driveControllerSubsystem = driveControllerSubsystem;\n    this.controllerSubsystem = controllerSubsystem;\n\n    addRequirements(driveSystem);\n  }\n  @Override\n  public void execute() {\n    // Read raw stick values and flip if needed\n    double left = controllerSubsystem.getAxisOrZero(DRIVER_LEFT_Y_AXIS, true);\n    double right = controllerSubsystem.getAxisOrZero(DRIVER_RIGHT_Y_AXIS, false);\n    if (DRIVER_LEFT_Y_INVERTED) left = -left;\n    if (DRIVER_RIGHT_Y_INVERTED) right = -right;\n\n    // Ignore tiny stick movements and scale to our speed limit\n    left = MathUtil.applyDeadband(left, DRIVE_DEADBAND) * DRIVE_SCALING;\n    right = MathUtil.applyDeadband(right, DRIVE_DEADBAND) * DRIVE_SCALING;\n\n    // Smooth out speed changes so the robot doesn\'t lurch\n    leftSmoothed = driveControllerSubsystem.applyAsymmetricSlew(leftSmoothed, left);\n    rightSmoothed = driveControllerSubsystem.applyAsymmetricSlew(rightSmoothed, right);\n\n    driveSubsystem.driveTank(leftSmoothed, rightSmoothed);\n  }\n}\n\npublic final class Constants()\n{\n  public static final class OperatorConstants{\n    public static final boolean DRIVER_LEFT_Y_INVERTED = false;\n    public static final boolean DRIVER_RIGHT_Y_INVERTED = false;\n    public static final double DRIVE_DEADBAND = 0.08;\n    public static double DRIVE_SCALING = 0.7;\n  }\n}',
-    hint: "The code is only missing declrations: look at the imported subsystems and constants as well as the execute method content and define them. Remember we use the keywords private final for class specific variables. Remember we only declare variables at the top of the class.",
+    starterCode: 'package frc.robot.commands.DriveCMDS;\nimport edu.wpi.first.math.MathUtil;\nimport edu.wpi.first.wpilibj2.command.Command;\nimport edu.wpi.first.wpilibj2.command.button.CommandXboxController;\nimport frc.robot.subsystems.CANDriveSubsystem;\nimport frc.robot.subsystems.ControllerSubsystem;\nimport frc.robot.subsystems.DriveControllerSubsystem;\n//Necessary Import Commands\nimport static frc.robot.Constants.Constants.OperatorConstants.*;\n\npublic class Drive extends Command{\n\n  public Drive(CANDriveSubsystem driveSystem, DriveControllerSubsystem driveControllerSubsystem, CommandXboxController driverController, ControllerSubsystem controllerSubsystem) {\n    this.driveSubsystem = driveSystem;\n    this.driveControllerSubsystem = driveControllerSubsystem;\n    this.controllerSubsystem = controllerSubsystem;\n\n    addRequirements(driveSystem);\n  }\n  @Override\n  public void execute() {\n    // Read raw stick values and flip if needed\n    double left = controllerSubsystem.getAxisOrZero(DRIVER_LEFT_Y_AXIS, true);\n    double right = controllerSubsystem.getAxisOrZero(DRIVER_RIGHT_Y_AXIS, false);\n    if (DRIVER_LEFT_Y_INVERTED) left = -left;\n    if (DRIVER_RIGHT_Y_INVERTED) right = -right;\n\n    // Ignore tiny stick movements and scale to our speed limit\n    left = MathUtil.applyDeadband(left, DRIVE_DEADBAND) * DRIVE_SCALING;\n    right = MathUtil.applyDeadband(right, DRIVE_DEADBAND) * DRIVE_SCALING;\n\n    // Smooth out speed changes so the robot doesn\'t lurch\n    leftSmoothed = driveControllerSubsystem.applyAsymmetricSlew(leftSmoothed, left);\n    rightSmoothed = driveControllerSubsystem.applyAsymmetricSlew(rightSmoothed, right);\n\n    driveSubsystem.driveTank(leftSmoothed, rightSmoothed);\n  }\n}\n\npublic final class Constants\n{\n  public static final class OperatorConstants{\n    public static final boolean DRIVER_LEFT_Y_INVERTED = false;\n    public static final boolean DRIVER_RIGHT_Y_INVERTED = false;\n    public static final double DRIVE_DEADBAND = 0.08;\n    public static final double DRIVE_SCALING = 0.7;\n  }\n}',
+    answerCode: 'package frc.robot.commands.DriveCMDS;\nimport edu.wpi.first.math.MathUtil;\nimport edu.wpi.first.wpilibj2.command.Command;\nimport edu.wpi.first.wpilibj2.command.button.CommandXboxController;\nimport frc.robot.subsystems.CANDriveSubsystem;\nimport frc.robot.subsystems.ControllerSubsystem;\nimport frc.robot.subsystems.DriveControllerSubsystem;\n//Necessary Import Commands\nimport static frc.robot.Constants.Constants.OperatorConstants.*;\n\npublic class Drive extends Command{\n  private final CANDriveSubsystem driveSystem;\n  private final DriveControllerSubsystem driveControllerSubsystem;\n  private final ControllerSubsystem controllerSubsystem;\n  private double leftSmoothed = 0.0;\n  private double rightSmoothed = 0.0;\n\n  public Drive(CANDriveSubsystem driveSystem, DriveControllerSubsystem driveControllerSubsystem, CommandXboxController driverController, ControllerSubsystem controllerSubsystem) {\n    this.driveSubsystem = driveSystem;\n    this.driveControllerSubsystem = driveControllerSubsystem;\n    this.controllerSubsystem = controllerSubsystem;\n\n    addRequirements(driveSystem);\n  }\n  @Override\n  public void execute() {\n    // Read raw stick values and flip if needed\n    double left = controllerSubsystem.getAxisOrZero(DRIVER_LEFT_Y_AXIS, true);\n    double right = controllerSubsystem.getAxisOrZero(DRIVER_RIGHT_Y_AXIS, false);\n    if (DRIVER_LEFT_Y_INVERTED) left = -left;\n    if (DRIVER_RIGHT_Y_INVERTED) right = -right;\n\n    // Ignore tiny stick movements and scale to our speed limit\n    left = MathUtil.applyDeadband(left, DRIVE_DEADBAND) * DRIVE_SCALING;\n    right = MathUtil.applyDeadband(right, DRIVE_DEADBAND) * DRIVE_SCALING;\n\n    // Smooth out speed changes so the robot doesn\'t lurch\n    leftSmoothed = driveControllerSubsystem.applyAsymmetricSlew(leftSmoothed, left);\n    rightSmoothed = driveControllerSubsystem.applyAsymmetricSlew(rightSmoothed, right);\n\n    driveSubsystem.driveTank(leftSmoothed, rightSmoothed);\n  }\n}\n\npublic final class Constants\n{\n  public static final class OperatorConstants{\n    public static final boolean DRIVER_LEFT_Y_INVERTED = false;\n    public static final boolean DRIVER_RIGHT_Y_INVERTED = false;\n    public static final double DRIVE_DEADBAND = 0.08;\n    public static final double DRIVE_SCALING = 0.7;\n  }\n}',
+    hint: "The code is only missing declarations: look at the imported subsystems, the constructor parameters, and the execute method content, then declare fields for each of them. The subsystem fields are assigned once in the constructor and never reassigned, so they should be private final. The smoothed-speed fields are reassigned every time execute() runs, so they should be private (not final), with a starting value of 0.0. Remember we only declare fields at the top of the class.",
     containerId: 'code-quiz-4-2'
     });
     Quiz({
         questions:[
           {
-            question: "How does using import static instead of import on constants change the way we use the varibles from constants?",
-            options: ['It allows us to use varibles without prefixing it with  "constants."', 'We cannot use varibles with a non-static inport from constants.', 'It allows us to use the constants formatting "MOTOR_SPEED" instead of standard formatting "MotorSpeed.', 'It ensures only one Constants is imported in the script.'],
+            question: "How does using import static instead of import on constants change the way we use the variables from Constants?",
+            options: ['It allows us to use variables without prefixing them with "Constants."', 'We cannot use variables with a non-static import from Constants.', 'It allows us to use the constants formatting "MOTOR_SPEED" instead of standard formatting "MotorSpeed."', 'It ensures only one Constants is imported in the script.'],
             answer: 0
           },
           {
-            question: "While importing constants as a static allows you to avoid using prefixing variables, it can become confusing to tell where variables orginated from in larger scripts, and thefor should be avoided when dealing with large amounts of variables.",
+            question: "While importing constants statically allows you to avoid prefixing variables, it can become confusing to tell where variables originated from in larger scripts, and therefore should be avoided when dealing with large amounts of variables.",
             options: ['True', 'False'],
             answer: 0
           },
           {
-            question: "Using just the variable name DRIVETRAIN_ENABLED with no additonal context, we can determine this varible is defined in _ (Assuming DRIVETRAIN_ENABLED is named correctly)",
-            options: ['DriveTrain.java', 'Constants.java', 'Robot.java', 'We cannot determine where the varible orginates from based only on its name.',],
+            question: "Using just the variable name DRIVETRAIN_ENABLED with no additional context, we can determine this variable is defined in _ (Assuming DRIVETRAIN_ENABLED is named correctly)",
+            options: ['DriveTrain.java', 'Constants.java', 'Robot.java', 'We cannot determine where the variable originates from based only on its name.',],
             answer: 1
           },
           {
             question: "What is the difference between final and static?",
-            options: ['While final prevents outside scripts from acessing the varible/method/class, static does not.', 'While static prevents the variables/methods/classes from being changed/modified after delaration, final prevents the creations of instances of variables/methods/classes', 'Final and static mean the same thing, however, static are used for variables, while final is used for methods/classes.', 'While final prevents the variables/methods/classes from being changed/modified after delaration, static prevents the creations of instances of variables/methods/classes'],
+            options: ['While final prevents outside scripts from accessing the variable/method/class, static does not.', 'While static prevents the variable/method/class from being changed or modified after declaration, final means there is one shared copy across the class instead of a separate copy per instance', 'Final and static mean the same thing, however, static is used for variables, while final is used for methods/classes.', 'While final prevents the variable/method/class from being changed or modified after declaration, static means there is one shared copy across the class instead of a separate copy per instance.'],
             answer: 3
           },
           {
@@ -174,18 +175,22 @@
           },  
           {
             question: "What type would be best for storing SHOOT_APPROACH_MAX_SPEED?",
-            options: ['Float, since we primarly concerned with saving membory, and a double might not be nessesary.', 'Int, since we primarly concerned with saving membory, so we can round to the nearest whole number.', 'Float, since we primarly concerned with saving membory, and a float might not be nessesary.', 'Double, since we are not as much nearly concered with saving memnory as recieving as persise values as possible, even if it might not be nessesary.'],
+            options: ['Float, since we are primarily concerned with saving memory, and a double might not be necessary.', 'Int, since we are primarily concerned with saving memory, so we can round to the nearest whole number.', 'F, since we are not as concerned with saving memory as we are with receiving as precise a value as possible, even if that precision might not always be necessary.', 'Double, since we are not as concerned with saving memory as we are with receiving as precise a value as possible, even if that precision might not always be necessary.'],
             answer: 3
           },  
           {
             question: "What is true about static classes?",
-            options: ['Static classes must be nested within a top class.', 'Static classes can acess any variable from the outer class.', 'Static classes are useful for classes that do not require instantaltion, like ones that store constant (static final) variables.', 'Option I and III are both correct.', 'Options I, II, and III are all correct.'],
+            options: ['Static nested classes must be declared within a top-level class.', 'Static classes can access any variable from the outer class.', 'Static classes are useful for classes that do not require instantiation, like ones that store constant (static final) variables.', 'Option I and III are both correct.', 'Options I, II, and III are all correct.'],
             answer: 3
           }, 
         ],
-        containerId: 'quiz-5-2'
+        containerId: 'quiz-5-3'
       });
-    
+      Summary({
+        quizId: 'quiz-5-3',
+        codeEditorId: ['code-quiz-5-1', 'code-quiz-5-2'],
+        containerId: 'summary-6-1'
+      });
     </script>
     <script src="../js/main.js"></script>
   </body>

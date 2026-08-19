@@ -104,7 +104,7 @@ export function Quiz({ questions, containerId = 'lesson-content' }) {
         <div class="score-bar-fill" style="width: ${percent}%"></div>
       </div>
       <p class="score-percent">${percent}%</p>
-      <button class=".btn">Try Again</button>
+      <button class="btn">Try Again</button>
     `;
     quizDiv.querySelector('.btn').onclick = () => {
       currentQuestion = 0;
@@ -259,22 +259,41 @@ export function PageNav({ containerId = 'lesson-content' }) {
 }
 
 // --- Summary: shows quiz + code editor stats for this lesson ---
+// quizId / codeEditorId can each be a single containerId string, or an array of them
+// if the page has more than one quiz/editor to report on.
 export function Summary({ quizId, codeEditorId, containerId = 'lesson-content' }) {
   const container = document.getElementById(containerId);
   const summaryDiv = document.createElement('div');
   summaryDiv.className = 'summary-block';
   container.appendChild(summaryDiv);
 
+  // Normalize to arrays so existing single-id call sites keep working unchanged.
+  const quizIds = quizId == null ? [] : (Array.isArray(quizId) ? quizId : [quizId]);
+  const codeEditorIds = codeEditorId == null ? [] : (Array.isArray(codeEditorId) ? codeEditorId : [codeEditorId]);
+
   function render() {
-    const q = stats.quiz[quizId] || { attempts: 0, highScore: 0, totalQuestions: 0 };
-    const c = stats.codeEditor[codeEditorId] || { attempts: 0, hintUsed: false };
+    const quizItems = quizIds.map((id, i) => {
+      const q = stats.quiz[id] || { attempts: 0, highScore: 0, totalQuestions: 0 };
+      const label = quizIds.length > 1 ? `Quiz ${i + 1}` : 'Quiz';
+      return `
+        <li><strong>${label} Attempts:</strong> ${q.attempts}</li>
+        <li><strong>${label} Highest Score:</strong> ${q.highScore}${q.totalQuestions ? ' / ' + q.totalQuestions : ''}</li>
+      `;
+    }).join('');
+
+    const codeEditorItems = codeEditorIds.map((id, i) => {
+      const c = stats.codeEditor[id] || { attempts: 0, hintUsed: false };
+      const label = codeEditorIds.length > 1 ? `Code Editor ${i + 1}` : 'Code Editor';
+      return `
+        <li><strong>${label} Attempts:</strong> ${c.attempts}</li>
+        <li><strong>${label} Hint Used:</strong> ${c.hintUsed ? 'Yes' : 'No'}</li>
+      `;
+    }).join('');
 
     summaryDiv.innerHTML = `
       <ul class="summary-list">
-        <li><strong>Quiz Attempts:</strong> ${q.attempts}</li>
-        <li><strong>Highest Quiz Score:</strong> ${q.highScore}${q.totalQuestions ? ' / ' + q.totalQuestions : ''}</li>
-        <li><strong>Code Editor Attempts:</strong> ${c.attempts}</li>
-        <li><strong>Hint Used:</strong> ${c.hintUsed ? 'Yes' : 'No'}</li>
+        ${quizItems}
+        ${codeEditorItems}
       </ul>
     `;
   }
