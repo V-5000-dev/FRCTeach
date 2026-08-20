@@ -85,7 +85,11 @@ a {
   align-items: center;
   gap:         0.65rem;
 }
-
+.team-logo{
+  width: 1024x;
+  height: 1024x;
+  justify-self: center;
+}
 .wpi-logo {
   width:  38px;
   height: 38px;
