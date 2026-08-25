@@ -1,7 +1,6 @@
-const isNested = window.location.pathname.split('/').length > 2;
-const headerPath = isNested ? '../components/header.html' : 'components/header.html';
+const base = document.currentScript.src.slice(0, document.currentScript.src.lastIndexOf('/js/') + 1);
 
-fetch(headerPath)
+fetch(base + 'components/header.html')
   .then(res => res.text())
   .then(html => {
     document.getElementById('header').innerHTML = html;
