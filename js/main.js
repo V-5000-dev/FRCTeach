@@ -1,4 +1,4 @@
-const base = document.currentScript.src.slice(0, document.currentScript.src.lastIndexOf('/js/') + 1);
+const base = new URL('..', document.currentScript.src).href;
 
 fetch(base + 'components/header.html')
   .then(res => res.text())
@@ -6,6 +6,7 @@ fetch(base + 'components/header.html')
     document.getElementById('header').innerHTML = html;
 
     const dropdown = document.getElementById('lessons-dropdown');
+    if (!dropdown) return;
     const trigger = dropdown.querySelector('.dropdown-trigger');
 
     trigger.addEventListener('click', (e) => {
