@@ -26,6 +26,7 @@
         <p>The simplest action is to bind an action to a controller button:</p>
         <div id="code-viewer-2-1"></div>
         <p>Let's take a look at this line. While the B and X buttons are pressed, a new instance of the command Rotate is created using the driveSubsystem. The true or false boolean determines if the robot should rotate clockwise or not.</p>
+        <div id="code-viewer-2-2"></div>
         <p>We can also change the function from whileTrue to onTrue or toggleOnTrue. onTrue only responds on press, and toggleOnTrue flipps from a true to false state.</p>
         <div id="code-viewer-2-3"></div>
         <p>Let's also bind our D-pad:</p>
@@ -54,12 +55,12 @@
         containerId: 'code-viewer-2-1'
       });
       CodeViewer({
-        starterCode: 'driverController.b().whileTrue(new Rotate(driveSubsystem, true));\ndriverController.x().onTrue(new (driveSubsystem));',
+        starterCode: '// whileTrue: runs while the button is held, cancels when released\ndriverController.b().whileTrue(new Rotate(driveSubsystem, true));\n\n// onTrue: triggers once on press, does not cancel when released\ndriverController.x().onTrue(new MoveForward(driveSubsystem));\n\n// toggleOnTrue: first press starts the command, second press cancels it\ndriverController.y().toggleOnTrue(new MoveForward(driveSubsystem));',
         containerId: 'code-viewer-2-2'
       });
       CodeViewer({
         starterCode: 'driverController.povUp().whileTrue(new ManageThrottle(1));\ndriverController.povDown().whileTrue(new ManageThrottle(-1));',
-        containerId: 'code-viewer-2-4'
+        containerId: 'code-viewer-2-3'
       })
       CodeViewer({
         starterCode: 'operatorController.leftTrigger().whileTrue(new LaunchSequence(shooterSubsystem, feederSubsystem));',
